@@ -9,11 +9,14 @@ The goal of this project is to have a fully functioning Race Manager System for 
     - Number of KM driven.
     
 - InSim Interface functions
+    - Menu For Points assignment.
     
 - Insim Display on Game Screen Properties.
-    - Insim should Display  
+    - Insim should Display Distance driven, Name, Points, Current Ranking, Best Laptime on Lap/car, WR on Lap/car
  
 - InSim local program functions
+    - Reset points for all drivers in DB
+    - Change points of selected driver to Anything.
 
 - Additional functionality.
     - Create a c# Display clientprogram, that pulls data from the SQL base and displays on screens.
