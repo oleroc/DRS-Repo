@@ -11,3 +11,16 @@ C:\Users\Peter Pan\Desktop\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS InSim.exe
 C:\Users\Peter Pan\Desktop\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS InSim.pdb
 C:\Users\Peter Pan\Desktop\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS_InSim.Form1.resources
 C:\Users\Peter Pan\Desktop\DRS InSim\DRS InSim\DRS InSim\bin\Debug\MySql.Data.dll
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\bin\Debug\DRS InSim.exe.config
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS InSim.exe
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS InSim.pdb
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\bin\Debug\DRS InSim.exe
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\bin\Debug\DRS InSim.pdb
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\bin\Debug\InSimDotNet.dll
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\bin\Debug\MySql.Data.dll
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\bin\Debug\InSimDotNet.pdb
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\bin\Debug\InSimDotNet.xml
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS InSim.csprojResolveAssemblyReference.cache
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS_InSim.Form1.resources
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS_InSim.Properties.Resources.resources
+C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\obj\Debug\DRS InSim.csproj.GenerateResource.Cache

@@ -243,11 +243,11 @@ namespace DRS_InSim
                 {
                     try
                     {
-                        if (SqlInfo.UserExist(NCN.UName))
+                        if (SqlInfo.UserExist(NCN.PName))
                         {
-                            // SqlInfo.UpdateUser(NCN.UName, true);//Updates the last joined time to the current one
+                            // SqlInfo.UpdateUser(NCN.PName, true);//Updates the last joined time to the current one
 
-                            string[] LoadedOptions = SqlInfo.LoadUserOptions(NCN.UName);
+                            string[] LoadedOptions = SqlInfo.LoadUserOptions(NCN.PName);
                             _connections[NCN.UCID].TotalDistance = Convert.ToInt32(LoadedOptions[0]);
                             _connections[NCN.UCID].points = Convert.ToInt32(LoadedOptions[1]);
 
@@ -256,7 +256,7 @@ namespace DRS_InSim
                         }
                         else
                         {
-                            SqlInfo.AddUser(NCN.UName, StringHelper.StripColors(_connections[NCN.UCID].PName), _connections[NCN.UCID].TotalDistance, _connections[NCN.UCID].points);
+                            SqlInfo.AddUser(StringHelper.StripColors(NCN.PName), StringHelper.StripColors(_connections[NCN.UCID].PName), _connections[NCN.UCID].TotalDistance, _connections[NCN.UCID].points);
 
                         }
 
@@ -451,7 +451,7 @@ namespace DRS_InSim
             {
                 if (ConnectedToSQL)
                 {
-                    try { SqlInfo.UpdateUser(_connections[CNL.UCID].UName, StringHelper.StripColors(_connections[CNL.UCID].PName), _connections[CNL.UCID].TotalDistance, _connections[CNL.UCID].points); }
+                    try { SqlInfo.UpdateUser(StringHelper.StripColors(_connections[CNL.UCID].PName), StringHelper.StripColors(_connections[CNL.UCID].PName), _connections[CNL.UCID].TotalDistance, _connections[CNL.UCID].points); }
                     catch (Exception EX)
                     {
                         if (!SqlInfo.IsConnectionStillAlive())
@@ -532,7 +532,19 @@ namespace DRS_InSim
 
                 if (ConnectedToSQL)
                 {
-                    try { SqlInfo.UpdateUser(_connections[CPR.UCID].UName, StringHelper.StripColors(_connections[CPR.UCID].PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points); }
+                    try
+                    {
+                        if (SqlInfo.UserExist(CPR.PName))
+                        {
+                            SqlInfo.UpdateUser(StringHelper.StripColors(CPR.PName), StringHelper.StripColors(CPR.PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points);
+                        }
+                        else
+                        {
+                            SqlInfo.AddUser(StringHelper.StripColors(CPR.PName), StringHelper.StripColors(_connections[CPR.UCID].PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points);
+
+                        }
+
+                    }
                     catch (Exception EX)
                     {
                         if (!SqlInfo.IsConnectionStillAlive())
@@ -540,7 +552,7 @@ namespace DRS_InSim
                             ConnectedToSQL = false;
                             SQLReconnectTimer.Start();
                         }
-                        else { LogTextToFile("error", "CNL - Exception: " + EX, false); }
+                        else Console.WriteLine("NCN(Add/Load)User - " + EX.Message);
                     }
                 }
 
