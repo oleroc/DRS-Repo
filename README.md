@@ -7,7 +7,7 @@
  - Finish statistics. (Number of 1, 2, 3, 4, 5, 6, 7 and 8 places) +pts
  - Number of KM driven.
 
- Insim Display on Game Screen Properties.
+Insim Display on Game Screen Properties.
  - InSim GUI
  - Driven distance
  - Points
