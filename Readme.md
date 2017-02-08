@@ -7,12 +7,14 @@ The goal of this project is to have a fully functioning Race Manager System for 
     - Best Lap Time for all Cars And Tracks. (84 Track configs multiplied by 20 cars 1680 fields pr. Driver)
     - Finish statistics. (Number of 1, 2, 3, 4, 5, 6, 7 and 8 places)
     - Number of KM driven.
+    - Race number (Starting from 1, going on forever)
     
 - InSim Interface functions
     - Menu For Points assignment.
     
 - Insim Display on Game Screen Properties.
     - Insim should Display Distance driven, Name, Points, Current Ranking, Best Laptime on Lap/car, WR on Lap/car
+    - When race is finished, a list of drivers in that race should be displayed, with the corresponding Points, sorted by points.
  
 - InSim local program functions
     - Reset points for all drivers in DB
