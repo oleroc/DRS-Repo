@@ -34,6 +34,7 @@ namespace DRS_InSim
                 SQL.Open();
 
                 Query("CREATE TABLE IF NOT EXISTS users(PRIMARY KEY(username),username CHAR(25) NOT NULL,nickname CHAR(40) NOT NULL,distance int(10),points int(10));");
+                // Query("CREATE TABLE IF NOT EXISTS admin_settings(PRIMARY KEY(settings),settings CHAR(25) NOT NULL,firstplace byte(3), secondplace byte(3), thirdplace byte(3), forthplace byte(3));");
             }
             catch { return false; }
             return true;
@@ -72,6 +73,8 @@ namespace DRS_InSim
 
             return found;
         }
+
+
         public void AddUser(string username, string nickname, int distance, int points)
         {
             if (username == "") return;
@@ -79,15 +82,15 @@ namespace DRS_InSim
         }
         public void UpdateUser(string username, string nickname, int distance, int points)
         {
-            Query("UPDATE users SET nickname='" + StringHelper.StripColors(nickname) + "', distance=" + distance + ", points=" + points + " WHERE username='" + username + "';");
+            Query("UPDATE users SET nickname='" + nickname + "', distance=" + distance + ", points=" + points + " WHERE username='" + username + "';");
         }
         public string[] LoadUserOptions(string username)
         {
-            string[] options = new string[3];
+            string[] options = new string[2];
 
             MySqlCommand query = new MySqlCommand();
             query.Connection = SQL;
-            query.CommandText = "SELECT nickname, distance, points FROM users WHERE username='" + username + "' LIMIT 1;";
+            query.CommandText = "SELECT distance, points FROM users WHERE username='" + username + "' LIMIT 1;";
             query.Prepare();
             MySqlDataReader dr = query.ExecuteReader();
 
@@ -96,7 +99,6 @@ namespace DRS_InSim
                 {
                     options[0] = dr.GetString(0);
                     options[1] = dr.GetString(1);
-                    options[2] = dr.GetString(2);
                 }
             dr.Close();
 

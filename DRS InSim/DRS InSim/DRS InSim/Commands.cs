@@ -25,6 +25,195 @@ namespace DRS_InSim
                         switch (command[0])
                         {
 
+                            case "!ap":
+                            case "!adminpanel":
+                                var conn = _connections[mso.UCID];
+                                
+                                if (conn.IsAdmin == true)
+                                {
+                                    if (conn.inAP == false)
+                                    {
+                                        #region ' buttons '
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 25,
+                                            ClickID = 25,
+                                            BStyle = ButtonStyles.ISB_DARK,
+                                            H = 80,
+                                            W = 50,
+                                            T = 52, // up to down
+                                            L = 75, // left to right
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 26,
+                                            ClickID = 26,
+                                            BStyle = ButtonStyles.ISB_LIGHT,
+                                            H = 9,
+                                            W = 48,
+                                            T = 53, // up to down
+                                            L = 76, // left to right
+                                            Text = "^7ADMIN PANELET"
+                                        });
+
+
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 27,
+                                            ClickID = 27,
+                                            BStyle = ButtonStyles.ISB_C4,
+                                            H = 5,
+                                            W = 48,
+                                            T = 65, // up to down
+                                            L = 76, // left to right
+                                            Text = "^3** Point Administration **"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 28,
+                                            ClickID = 28,
+                                            BStyle = ButtonStyles.ISB_RIGHT,
+                                            H = 4,
+                                            W = 13,
+                                            T = 73, // up to down
+                                            L = 88, // left to right
+                                            Text = "^71. place:"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 29,
+                                            ClickID = 29,
+                                            BStyle = ButtonStyles.ISB_RIGHT,
+                                            H = 4,
+                                            W = 13,
+                                            T = 77, // up to down
+                                            L = 88, // left to right
+                                            Text = "^72. place:"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 30,
+                                            ClickID = 30,
+                                            BStyle = ButtonStyles.ISB_RIGHT,
+                                            H = 4,
+                                            W = 13,
+                                            T = 81, // up to down
+                                            L = 88, // left to right
+                                            Text = "^73. place:"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 31,
+                                            ClickID = 31,
+                                            BStyle = ButtonStyles.ISB_RIGHT,
+                                            H = 4,
+                                            W = 13,
+                                            T = 85, // up to down
+                                            L = 88, // left to right
+                                            Text = "^74. place:"
+                                        });
+
+
+
+
+
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 32,
+                                            ClickID = 32,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 5,
+                                            T = 73, // up to down
+                                            L = 102, // left to right
+                                            Text = "",
+                                            TypeIn = 3,
+                                            Caption = "^0Amount of points to reward 1st place"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 33,
+                                            ClickID = 33,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 5,
+                                            T = 77, // up to down
+                                            L = 102, // left to right
+                                            Text = "",
+                                            TypeIn = 3,
+                                            Caption = "^0Amount of points to reward 2nd place"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 34,
+                                            ClickID = 34,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 5,
+                                            T = 81, // up to down
+                                            L = 102, // left to right
+                                            Text = "",
+                                            TypeIn = 3,
+                                            Caption = "^0Amount of points to reward 3rd place"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 35,
+                                            ClickID = 35,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 5,
+                                            T = 85, // up to down
+                                            L = 102, // left to right
+                                            Text = "",
+                                            TypeIn = 3,
+                                            Caption = "^0Amount of points to reward 4th place"
+                                        });
+
+
+
+
+
+
+
+                                        #endregion
+
+                                        conn.inAP = true;
+                                    }
+                                    else
+                                    {
+                                        insim.Send(mso.UCID, "^1Du er allerede i admin panelet!");
+                                    }
+                                }
+                                else
+                                {
+                                    insim.Send(mso.UCID, "^1Ingen tilgang");
+                                }
+
+                                break;
+
                             case "!t":
 
                                 insim.Send(mso.UCID, "^8Distance: ^3+3 km");
@@ -36,6 +225,10 @@ namespace DRS_InSim
                                 // MessageToAdmins("nub");
 
                                 insim.Send(mso.UCID, "^8Distance: ^3" + _connections[mso.UCID].TotalDistance);
+                                insim.Send(mso.UCID, "^8Nickname: ^3" + _connections[mso.UCID].PName);
+                                insim.Send(mso.UCID, "^8Points: ^3" + _connections[mso.UCID].points);
+
+
 
                                 break;
 

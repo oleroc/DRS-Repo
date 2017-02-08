@@ -17,6 +17,12 @@ namespace DRS_InSim
         public string Layoutname = "None";
         public string TrackName = "None";
         public string InSim_Version = "1.1.2b";
+        public bool enable_db_connection = true;
+
+        public string onepts;
+        public string twopts;
+        public string threepts;
+        public string fourpts;
 
         // MySQL Variables
         public SQLInfo SqlInfo = new SQLInfo();
@@ -54,6 +60,9 @@ namespace DRS_InSim
             public string CarName;
             public int Pitstops;
             public bool SentMSG;
+
+            // Admin panel
+            public bool inAP;
         }
         class Players
         {
@@ -88,25 +97,26 @@ namespace DRS_InSim
             insim.Bind<IS_MSO>(MessageReceived);
             insim.Bind<IS_MCI>(MultiCarInfo);
             insim.Bind<IS_CNL>(ConnectionLeave);
-            // insim.Bind<IS_CPR>(ClientRenames);
+            insim.Bind<IS_CPR>(ClientRenames);
             // insim.Bind<IS_PLL>(PlayerLeave);
             insim.Bind<IS_STA>(OnStateChange);
             // insim.Bind<IS_BTC>(ButtonClicked);
-            // insim.Bind<IS_BFN>(ClearButtons);
+            insim.Bind<IS_BFN>(ClearButtons);
             // insim.Bind<IS_VTN>(VoteNotify);
             insim.Bind<IS_AXI>(OnAutocrossInformation);
             // insim.Bind<IS_TINY>(OnTinyReceived);
             // insim.Bind<IS_CON>(CarCOntact);
-            // insim.Bind<IS_BTT>(ButtonType);
+            insim.Bind<IS_BTT>(ButtonType);
             insim.Bind<IS_LAP>(Laps);
             insim.Bind<IS_RES>(Res);
             insim.Bind<IS_PIT>(Pitstop);
             insim.Bind<IS_HLV>(HotLapValidity);
+            insim.Bind<IS_RES>(Result);
 
             // Initialize InSim
             insim.Initialize(new InSimSettings
             {
-                Host = "51.254.134.112", // 93.190.143.115
+                Host = "51.254.134.112", // 51.254.134.112         192.168.3.10
                 Port = 29999,
                 Admin = "2910693997",
                 Prefix = '!',
@@ -134,13 +144,13 @@ namespace DRS_InSim
             {
                 insim.Send(255, "SQL connect attempt failed! Attempting to reconnect in ^310 ^8seconds!");
                 SQLReconnectTimer.Start();
-                // SaveTimer.Start();
+                SaveTimer.Start();
             }
             else
             {
-                insim.Send(255, "^2Successfully loaded user data from MySQL database");
+                insim.Send(255, "^2Loaded userdata from database");
             }
-        }
+       } 
 
         #region ' Readers and Writers '
         private bool GetUserAdmin(string Username)
@@ -238,11 +248,22 @@ namespace DRS_InSim
                             // SqlInfo.UpdateUser(NCN.UName, true);//Updates the last joined time to the current one
 
                             string[] LoadedOptions = SqlInfo.LoadUserOptions(NCN.UName);
-                            _connections[NCN.UCID].PName = LoadedOptions[0];
-                            _connections[NCN.UCID].TotalDistance = Convert.ToInt32(LoadedOptions[1]);
-                            _connections[NCN.UCID].points = Convert.ToInt32(LoadedOptions[2]);
+                            _connections[NCN.UCID].TotalDistance = Convert.ToInt32(LoadedOptions[0]);
+                            _connections[NCN.UCID].points = Convert.ToInt32(LoadedOptions[1]);
+
+                            // Welcome messages
+                            insim.Send(NCN.UCID, "^8Welcome back, " + NCN.PName);
                         }
-                        else SqlInfo.AddUser(NCN.UName, StringHelper.StripColors(_connections[NCN.UCID].PName), _connections[NCN.UCID].TotalDistance, _connections[NCN.UCID].points);
+                        else
+                        {
+                            SqlInfo.AddUser(NCN.UName, StringHelper.StripColors(_connections[NCN.UCID].PName), _connections[NCN.UCID].TotalDistance, _connections[NCN.UCID].points);
+
+                        }
+
+
+
+
+
                     }
                     catch (Exception EX)
                     {
@@ -259,14 +280,15 @@ namespace DRS_InSim
                 {
                     try
                     {
-                        // Welcome messages
-                        insim.Send(NCN.UCID, "^8Welcome back, " + NCN.PName);
+
                     }
                     catch (Exception EX)
                     {
                         LogTextToFile("InSim-Errors", "[" + NCN.UCID + "] " + StringHelper.StripColors(NCN.PName) + "(" + NCN.UName + ") NCN - Exception: " + EX, false);
                     }
                 }
+
+                UpdateGui(NCN.UCID, true);
             }
             catch (Exception e) { LogTextToFile("InSim-Errors", "[" + NCN.UCID + "] " + StringHelper.StripColors(NCN.PName) + "(" + NCN.UName + ") NCN - Exception: " + e, false); }
         }
@@ -295,7 +317,7 @@ namespace DRS_InSim
 
                 conn.SentMSG = false;
 
-
+                
 
             }
             catch (Exception e) { LogTextToFile("InSim-Errors", "[" + LAP.PLID + "] " + " NCN - Exception: " + e, false); }
@@ -343,6 +365,7 @@ namespace DRS_InSim
 
                 Connections CurrentConnection = GetConnection(NPL.PLID);
 
+                if (CurrentConnection.SentMSG)
                 CurrentConnection.CarName = NPL.CName;
             }
             catch (Exception e) { LogTextToFile("InSim-Errors", "[" + NPL.PLID + "] " + " NCN - Exception: " + e, false); }
@@ -350,7 +373,7 @@ namespace DRS_InSim
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            insim.Send(255, "^1InSim is now off");
+            insim.Send(255, "^1InSim closed.");
         }
 
         void Pitstop(InSim insim, IS_PIT PIT)
@@ -437,7 +460,7 @@ namespace DRS_InSim
                             SQLReconnectTimer.Start();
                         }
                         else { LogTextToFile("error", "CNL - Exception: " + EX, false); }
-                }
+                    }
                 }
             }
             catch (Exception e) { LogTextToFile("error", "CNL - Exception: " + e, false); }
@@ -452,7 +475,7 @@ namespace DRS_InSim
                     foreach (CompCar car in mci.Info)
                     {
                         Connections conn = GetConnection(car.PLID);
-                        if (conn.OnTrack == true && conn.UCID != 0)
+                        if (conn.UCID != 0)
                         {
                             int Sped = Convert.ToInt32(MathHelper.SpeedToKph(car.Speed));
 
@@ -473,11 +496,206 @@ namespace DRS_InSim
 
                             conn.TotalDistance += Convert.ToInt32(SpeedMS);
                             // anglenew = angle.ToString().Replace("-", "");
+                            UpdateGui(conn.UCID, true);
+
+
                         }
                     }
                 }
             }
             catch (Exception e) { LogTextToFile("error", "MCI - Exception: " + e, false); }
+        }
+
+        // BuTton FunctioN (IS_BFN, SHIFT+I SHIFT+B)
+        void ClearButtons(InSim insim, IS_BFN BFN)
+        {
+            try
+            {
+                insim.Send(BFN.UCID, "^8InSim buttons cleared ^7(SHIFT + I)");
+                UpdateGui(BFN.UCID, true);
+
+                if (_connections[BFN.UCID].inAP == true)
+                {
+                    _connections[BFN.UCID].inAP = false;
+                }
+            }
+            catch (Exception e)
+            { LogTextToFile("error", "[" + BFN.UCID + "] " + StringHelper.StripColors(_connections[BFN.UCID].PName) + "(" + _connections[BFN.UCID].UName + ") BFN - Exception: " + e, false); }
+        }
+
+        // BuTton FunctioN (IS_BFN, SHIFT+I SHIFT+B)
+        void ClientRenames(InSim insim, IS_CPR CPR)
+        {
+            try
+            {
+                _connections[CPR.UCID].PName = CPR.PName;
+
+                if (ConnectedToSQL)
+                {
+                    try { SqlInfo.UpdateUser(_connections[CPR.UCID].UName, StringHelper.StripColors(_connections[CPR.UCID].PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points); }
+                    catch (Exception EX)
+                    {
+                        if (!SqlInfo.IsConnectionStillAlive())
+                        {
+                            ConnectedToSQL = false;
+                            SQLReconnectTimer.Start();
+                        }
+                        else { LogTextToFile("error", "CNL - Exception: " + EX, false); }
+                    }
+                }
+
+                UpdateGui(CPR.UCID, true);
+            }
+            catch (Exception e)
+            { LogTextToFile("error", "[" + CPR.UCID + "] " + StringHelper.StripColors(_connections[CPR.UCID].PName) + "(" + _connections[CPR.UCID].UName + ") BFN - Exception: " + e, false); }
+        }
+
+        // Button type
+        void ButtonType(InSim insim, IS_BTT BTT)
+        {
+            try
+            {
+                switch (BTT.ClickID)
+                {
+                    case 32:
+
+                        onepts = BTT.Text;
+
+                        insim.Send(new IS_BTN
+                        {
+                            UCID = BTT.UCID,
+                            ReqI = 32,
+                            ClickID = 32,
+                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                            H = 4,
+                            W = 5,
+                            T = 73, // up to down
+                            L = 102, // left to right
+                            Text = "" + BTT.Text,
+                            TypeIn = 3,
+                            Caption = "^0Amount of points to reward 1st place"
+                        });
+
+                        break;
+
+                    case 33:
+
+                        twopts = BTT.Text;
+
+                        break;
+
+                    case 34:
+
+                        threepts = BTT.Text;
+
+                        break;
+
+                    case 35:
+
+                        fourpts = BTT.Text;
+
+                        break;
+                }
+            }
+            catch (Exception e)
+            { LogTextToFile("error", "[" + BTT.UCID + "] " + StringHelper.StripColors(_connections[BTT.UCID].PName) + "(" + _connections[BTT.UCID].UName + ") BTT - Exception: " + e, false); }
+        }
+
+        // Race win pos
+        void Result(InSim insim, IS_RES RES)
+        {
+            try
+            {
+                Connections CurrentConnection = GetConnection(RES.PLID);
+
+                if (CurrentConnection.SentMSG == false)
+                {
+                    if (RES.ResultNum == 0)
+                    {
+                        // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 1st!");
+                        CurrentConnection.points += 4;
+                    }
+                    else if (RES.ResultNum == 1)
+                    {
+                        // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
+                        CurrentConnection.points += 3;
+                    }
+                    else if (RES.ResultNum == 2)
+                    {
+                        // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
+                        CurrentConnection.points += 2;
+                    }
+                    else if (RES.ResultNum == 3)
+                    {
+                        // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
+                        CurrentConnection.points += 1;
+                    }
+                }
+
+                UpdateGui(CurrentConnection.UCID, true);
+            }
+            catch (Exception e)
+            { LogTextToFile("error", "[" + RES.PLID + "] " + "" + "() BFN - Exception: " + e, false); }
+        }
+
+        void UpdateGui(byte UCID, bool main)
+        {
+            if (main)
+            {
+                // DARK
+                insim.Send(new IS_BTN
+                {
+                    UCID = UCID,
+                    ReqI = 1,
+                    ClickID = 1,
+                    BStyle = ButtonStyles.ISB_DARK,
+                    H = 8,
+                    W = 68,
+                    T = 0,
+                    L = 66,
+                });
+
+                insim.Send(new IS_BTN
+                {
+                    UCID = UCID,
+                    ReqI = 2,
+                    ClickID = 2,
+                    BStyle = ButtonStyles.ISB_LEFT,
+                    H = 5,
+                    W = 20,
+                    T = 1,
+                    L = 67,
+                    Text = "^3Distance: ^7" + _connections[UCID].TotalDistance / 1000 + " km"
+                });
+
+                insim.Send(new IS_BTN
+                {
+                    UCID = UCID,
+                    ReqI = 3,
+                    ClickID = 3,
+                    BStyle = ButtonStyles.ISB_C4,
+                    H = 5,
+                    W = 31,
+                    T = 1,
+                    L = 87,
+                    Text = "^7" + _connections[UCID].PName
+                });
+
+                insim.Send(new IS_BTN
+                {
+                    UCID = UCID,
+                    ReqI = 4,
+                    ClickID = 4,
+                    BStyle = ButtonStyles.ISB_RIGHT,
+                    H = 5,
+                    W = 15,
+                    T = 1,
+                    L = 118,
+                    Text = "^3Points: ^7" + _connections[UCID].points
+                });
+
+
+            }
         }
     }
 }
