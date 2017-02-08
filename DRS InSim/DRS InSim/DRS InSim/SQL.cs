@@ -33,8 +33,7 @@ namespace DRS_InSim
                     ";Connect Timeout=10;";
                 SQL.Open();
 
-                Query("CREATE TABLE IF NOT EXISTS users(PRIMARY KEY(playername),playername CHAR(30) NOT NULL,nickname CHAR(40) NOT NULL,distance int(10),points int(10));");
-                // Query("CREATE TABLE IF NOT EXISTS users(PRIMARY KEY(username),username CHAR(25) NOT NULL,nickname CHAR(40) NOT NULL,distance int(10),points int(10));");
+                Query("CREATE TABLE IF NOT EXISTS users(PRIMARY KEY(username),username CHAR(25) NOT NULL,nickname CHAR(40) NOT NULL,distance decimal(10),points int(10));");
                 // Query("CREATE TABLE IF NOT EXISTS admin_settings(PRIMARY KEY(settings),settings CHAR(25) NOT NULL,firstplace byte(3), secondplace byte(3), thirdplace byte(3), forthplace byte(3));");
             }
             catch { return false; }
@@ -48,6 +47,43 @@ namespace DRS_InSim
             query.Prepare();
             return query.ExecuteNonQuery();
         }
+        // Users db count
+        public int userCount()
+        {
+            MySqlCommand query = new MySqlCommand();
+            query.Connection = SQL;
+            query.CommandText = "SELECT COUNT(*) FROM users";
+            query.Prepare();
+            MySqlDataReader dr = query.ExecuteReader();
+
+            if (dr.Read())
+                if (dr.GetString(0) != "")
+                    dr.Close();
+
+            return Convert.ToInt32(query.ExecuteScalar());
+        }
+
+        public void deletePTS()
+        {
+            Query("UPDATE users SET points=0;");
+        }
+
+        public void deleteDIST()
+        {
+            Query("UPDATE users SET distance=0;");
+        }
+
+        public void deleteownPTS(string username)
+        {
+            Query("UPDATE users set points=0 WHERE username='" + username + "';");
+        }
+
+        public void deleteownDIST(string username)
+        {
+            Query("UPDATE users set distance=0 WHERE username='" + username + "';");
+        }
+
+
         string RemoveStupidCharacters(string text)
         {
             if (text.Contains("'")) text = text.Replace('\'', '`');
@@ -59,11 +95,11 @@ namespace DRS_InSim
         }
         #endregion
         #region Player Saving Stuff
-        public bool UserExist(string playername, string table = "users")
+        public bool UserExist(string username, string table = "users")
         {
             MySqlCommand query = new MySqlCommand();
             query.Connection = SQL;
-            query.CommandText = "SELECT playername FROM " + table + " WHERE playername='" + playername + "' LIMIT 1;";
+            query.CommandText = "SELECT username FROM " + table + " WHERE username='" + username + "' LIMIT 1;";
             query.Prepare();
             MySqlDataReader dr = query.ExecuteReader();
 
@@ -76,22 +112,22 @@ namespace DRS_InSim
         }
 
 
-        public void AddUser(string playername, string nickname, int distance, int points)
+        public void AddUser(string username, string nickname, decimal distance, int points)
         {
-            if (playername == "") return;
-            Query("INSERT INTO users VALUES ('" + playername + "', '" + StringHelper.StripColors(nickname) + "', " + distance + ", " + points + ");");
+            if (username == "") return;
+            Query("INSERT INTO users VALUES ('" + username + "', '" + StringHelper.StripColors(nickname) + "', " + distance + ", " + points + ");");
         }
-        public void UpdateUser(string playername, string nickname, int distance, int points)
+        public void UpdateUser(string username, string nickname, decimal distance, int points)
         {
-            Query("UPDATE users SET nickname='" + nickname + "', distance=" + distance + ", points=" + points + " WHERE playername='" + playername + "';");
+            Query("UPDATE users SET nickname='" + nickname + "', distance=" + distance + ", points=" + points + " WHERE username='" + username + "';");
         }
-        public string[] LoadUserOptions(string playername)
+        public string[] LoadUserOptions(string username)
         {
             string[] options = new string[2];
 
             MySqlCommand query = new MySqlCommand();
             query.Connection = SQL;
-            query.CommandText = "SELECT distance, points FROM users WHERE playername='" + playername + "' LIMIT 1;";
+            query.CommandText = "SELECT distance, points FROM users WHERE username='" + username + "' LIMIT 1;";
             query.Prepare();
             MySqlDataReader dr = query.ExecuteReader();
 

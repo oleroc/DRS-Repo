@@ -24,6 +24,8 @@ namespace DRS_InSim
         public string threepts;
         public string fourpts;
 
+        public int dbCount;
+
         // MySQL Variables
         public SQLInfo SqlInfo = new SQLInfo();
         public bool ConnectedToSQL = false;
@@ -48,7 +50,7 @@ namespace DRS_InSim
 
             // Other
             public bool OnTrack;
-            public int TotalDistance;
+            public decimal TotalDistance;
             public bool KMHoverMPH;
             public int points;
 
@@ -239,16 +241,18 @@ namespace DRS_InSim
                     points = 0
                 });
 
+                dbCount = SqlInfo.userCount();
+
                 if (ConnectedToSQL)
                 {
                     try
                     {
-                        if (SqlInfo.UserExist(NCN.PName))
+                        if (SqlInfo.UserExist(NCN.UName))
                         {
-                            // SqlInfo.UpdateUser(NCN.PName, true);//Updates the last joined time to the current one
+                            // SqlInfo.UpdateUser(NCN.UName, true);//Updates the last joined time to the current one
 
-                            string[] LoadedOptions = SqlInfo.LoadUserOptions(NCN.PName);
-                            _connections[NCN.UCID].TotalDistance = Convert.ToInt32(LoadedOptions[0]);
+                            string[] LoadedOptions = SqlInfo.LoadUserOptions(NCN.UName);
+                            _connections[NCN.UCID].TotalDistance = Convert.ToDecimal(LoadedOptions[0]);
                             _connections[NCN.UCID].points = Convert.ToInt32(LoadedOptions[1]);
 
                             // Welcome messages
@@ -256,7 +260,7 @@ namespace DRS_InSim
                         }
                         else
                         {
-                            SqlInfo.AddUser(StringHelper.StripColors(NCN.PName), StringHelper.StripColors(_connections[NCN.UCID].PName), _connections[NCN.UCID].TotalDistance, _connections[NCN.UCID].points);
+                            SqlInfo.AddUser(NCN.UName, StringHelper.StripColors(_connections[NCN.UCID].PName), _connections[NCN.UCID].TotalDistance, _connections[NCN.UCID].points);
 
                         }
 
@@ -311,6 +315,7 @@ namespace DRS_InSim
 (int)_connections[conn.UCID].LapTime.Minutes,
     _connections[conn.UCID].LapTime.Seconds,
     _connections[conn.UCID].LapTime.Milliseconds) + " ^8- ^3" + conn.CarName);
+                    conn.SentMSG = true;
 
                     
                 }
@@ -365,7 +370,7 @@ namespace DRS_InSim
 
                 Connections CurrentConnection = GetConnection(NPL.PLID);
 
-                if (CurrentConnection.SentMSG)
+                // if (CurrentConnection.SentMSG)
                 CurrentConnection.CarName = NPL.CName;
             }
             catch (Exception e) { LogTextToFile("InSim-Errors", "[" + NPL.PLID + "] " + " NCN - Exception: " + e, false); }
@@ -451,7 +456,7 @@ namespace DRS_InSim
             {
                 if (ConnectedToSQL)
                 {
-                    try { SqlInfo.UpdateUser(StringHelper.StripColors(_connections[CNL.UCID].PName), StringHelper.StripColors(_connections[CNL.UCID].PName), _connections[CNL.UCID].TotalDistance, _connections[CNL.UCID].points); }
+                    try { SqlInfo.UpdateUser(_connections[CNL.UCID].UName, StringHelper.StripColors(_connections[CNL.UCID].PName), _connections[CNL.UCID].TotalDistance, _connections[CNL.UCID].points); }
                     catch (Exception EX)
                     {
                         if (!SqlInfo.IsConnectionStillAlive())
@@ -479,8 +484,8 @@ namespace DRS_InSim
                         {
                             int Sped = Convert.ToInt32(MathHelper.SpeedToKph(car.Speed));
 
-                            decimal SpeedMS = (int)(((car.Speed / 32768f) * 100f) / 2);
-                            decimal Speed = (int)((car.Speed * (100f / 32768f)) * 3.6f);
+                            decimal SpeedMS = (decimal)(((car.Speed / 32768f) * 100f) / 2);
+                            decimal Speed = (decimal)((car.Speed * (100f / 32768f)) * 3.6f);
 
                             int kmh = car.Speed / 91;
                             int mph = car.Speed / 146;
@@ -532,19 +537,7 @@ namespace DRS_InSim
 
                 if (ConnectedToSQL)
                 {
-                    try
-                    {
-                        if (SqlInfo.UserExist(CPR.PName))
-                        {
-                            SqlInfo.UpdateUser(StringHelper.StripColors(CPR.PName), StringHelper.StripColors(CPR.PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points);
-                        }
-                        else
-                        {
-                            SqlInfo.AddUser(StringHelper.StripColors(CPR.PName), StringHelper.StripColors(_connections[CPR.UCID].PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points);
-
-                        }
-
-                    }
+                    try { SqlInfo.UpdateUser(_connections[CPR.UCID].UName, StringHelper.StripColors(_connections[CPR.UCID].PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points); }
                     catch (Exception EX)
                     {
                         if (!SqlInfo.IsConnectionStillAlive())
@@ -552,7 +545,7 @@ namespace DRS_InSim
                             ConnectedToSQL = false;
                             SQLReconnectTimer.Start();
                         }
-                        else Console.WriteLine("NCN(Add/Load)User - " + EX.Message);
+                        else { LogTextToFile("error", "CNL - Exception: " + EX, false); }
                     }
                 }
 
@@ -677,7 +670,7 @@ namespace DRS_InSim
                     W = 20,
                     T = 1,
                     L = 67,
-                    Text = "^3Distance: ^7" + _connections[UCID].TotalDistance / 1000 + " km"
+                    Text = "^3Distance: ^7" + string.Format("{0:0.0}", _connections[UCID].TotalDistance / 1000) + " km"
                 });
 
                 insim.Send(new IS_BTN

@@ -209,43 +209,64 @@ namespace DRS_InSim
                                 }
                                 else
                                 {
-                                    insim.Send(mso.UCID, "^1Ingen tilgang");
+                                    insim.Send(mso.UCID, "^1No access");
                                 }
 
                                 break;
 
-                            case "!t":
-
-                                insim.Send(mso.UCID, "^8Distance: ^3+3 km");
-                                _connections[mso.UCID].TotalDistance += 3000;
-
+                            case "!deletepts":
+                            case "!deletepoints":
+                            case "!delpts":
+                                _connections[mso.UCID].points = 0;
+                                SqlInfo.deleteownPTS(_connections[mso.UCID].UName);
+                                insim.Send(mso.UCID, "^8Your points has reset");
                                 break;
 
-                            case "!test":
-                                // MessageToAdmins("nub");
-
-                                insim.Send(mso.UCID, "^8Distance: ^3" + _connections[mso.UCID].TotalDistance);
-                                insim.Send(mso.UCID, "^8Nickname: ^3" + _connections[mso.UCID].PName);
-                                insim.Send(mso.UCID, "^8Points: ^3" + _connections[mso.UCID].points);
-
-
-
+                            case "!deletedist":
+                            case "!deletedistance":
+                            case "!deldist":
+                                _connections[mso.UCID].TotalDistance = 0;
+                                SqlInfo.deleteownDIST(_connections[mso.UCID].UName);
+                                insim.Send(mso.UCID, "^8Your total distance has reset");
                                 break;
 
-                            case "!stats":
+                            case "!deleteptsall":
+                            case "!deletepointsall":
+                            case "!delptsall":
+                                if (_connections[mso.UCID].IsAdmin == true)
+                                {
+                                    foreach (var conns in _connections.Values)
+                                    {
+                                        conns.points = 0;
+                                        SqlInfo.deletePTS();
+                                    }
 
-                                insim.Send(mso.UCID, "^8Elapsed race time: ^3" + _connections[mso.UCID].ERaceTime);
-                                insim.Send(mso.UCID, "^8Laps done: ^3" + _connections[mso.UCID].LapsDone);
-                                insim.Send(mso.UCID, "^8Pitstops: ^3" + _connections[mso.UCID].NumStops);
-                                insim.Send(mso.UCID, "^8Lap time: ^3" + _connections[mso.UCID].LapTime);
-                                insim.Send(mso.UCID, "^8Car: ^3" + _connections[mso.UCID].CarName);
-                                insim.Send(mso.UCID, "^8Track: ^3" + TrackName.ToUpper());
+                                    insim.Send(mso.UCID, "^3" + dbCount + " ^8entries of column ^3points ^8deleted.");
+                                }
+                                else
+                                {
+                                    insim.Send(mso.UCID, "^1No access");
+                                }
+                                break;
 
-                                insim.Send(mso.UCID, "^3[" + TrackName + "] ^8Completed a lap: ^3" + string.Format("{0:00}:{1:00}:{2:0}",
-(int)_connections[mso.UCID].LapTime.Minutes,
-_connections[mso.UCID].LapTime.Seconds,
-_connections[mso.UCID].LapTime.Milliseconds) + " ^8- ^3" + _connections[mso.UCID].CarName);
+                            case "!deldistanceall":
+                            case "!deldistall":
+                            case "!deletedistall":
+                            case "!deletedistanceall":
+                                if (_connections[mso.UCID].IsAdmin == true)
+                                {
+                                    foreach (var conns in _connections.Values)
+                                    {
+                                        conns.TotalDistance = 0;
+                                        SqlInfo.deleteDIST();
+                                    }
 
+                                    insim.Send(mso.UCID, "^3" + dbCount + " ^8entries of column ^3distance ^8deleted.");
+                                }
+                                else
+                                {
+                                    insim.Send(mso.UCID, "^1No access");
+                                }
                                 break;
 
                             case "!ac":

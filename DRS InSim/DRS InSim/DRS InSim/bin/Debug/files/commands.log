@@ -1,0 +1,18 @@
+2/8/2017 11:25:10 PM: [15] Kriss(tpx) NPL - Exception: MySql.Data.MySqlClient.MySqlException (0x80004005): Incorrect integer value: '' for column 'points' at row 1
+   at MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.GetResult(Int32 statementId, Int32& affectedRows, Int64& insertedId)
+   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader()
+   at DRS_InSim.SQLInfo.deletePoints() in C:\Users\Peter Pan\Desktop\DRS-Repo-master\DRS InSim\DRS InSim\DRS InSim\SQL.cs:line 73
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Desktop\DRS-Repo-master\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 227
+2/8/2017 11:27:26 PM: [7] Kriss(tpx) NPL - Exception: MySql.Data.MySqlClient.MySqlException (0x80004005): There is already an open DataReader associated with this Connection which must be closed first.
+   at MySql.Data.MySqlClient.ExceptionInterceptor.Throw(Exception exception)
+   at MySql.Data.MySqlClient.MySqlConnection.Throw(Exception ex)
+   at MySql.Data.MySqlClient.MySqlCommand.CheckState()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteScalar()
+   at DRS_InSim.SQLInfo.deletePoints() in C:\Users\Peter Pan\Desktop\DRS-Repo-master\DRS InSim\DRS InSim\DRS InSim\SQL.cs:line 79
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Desktop\DRS-Repo-master\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 229

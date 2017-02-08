@@ -41,7 +41,7 @@ namespace DRS_InSim
             SQLReconnectTimer.Elapsed += new System.Timers.ElapsedEventHandler(SQLReconnectTimer_Elapsed);
 
             // Save timer
-            SaveTimer.Interval = 5000;
+            SaveTimer.Interval = 3000;
             SaveTimer.Elapsed += new System.Timers.ElapsedEventHandler(Savetimer_Elapsed);
             SaveTimer.Enabled = true;
         }
@@ -57,6 +57,11 @@ namespace DRS_InSim
                         try
                         {
                             SqlInfo.UpdateUser(_connections[conn.UCID].UName, _connections[conn.UCID].PName, _connections[conn.UCID].TotalDistance, _connections[conn.UCID].points);
+
+                            if (_connections[conn.UCID].OnTrack == false)
+                            {
+                                UpdateGui(conn.UCID, true);
+                            }
                         }
                         catch (Exception EX)
                         {
