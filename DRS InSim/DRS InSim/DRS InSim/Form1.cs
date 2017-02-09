@@ -14,9 +14,11 @@ namespace DRS_InSim
     {
         InSim insim = new InSim();
 
+        const string DataFolder = "files";
+
         public string Layoutname = "None";
         public string TrackName = "None";
-        public string InSim_Version = "1.1.3";
+        public string InSim_Version = "1.1.3b";
         public bool enable_db_connection = true;
 
         public string onepts;
@@ -62,6 +64,7 @@ namespace DRS_InSim
             public string CarName;
             public int Pitstops;
             public bool SentMSG;
+            public bool Disqualified;
 
             // Admin panel
             public bool inAP;
@@ -81,6 +84,39 @@ namespace DRS_InSim
         private Dictionary<byte, Connections> _connections = new Dictionary<byte, Connections>();
         private Dictionary<byte, Players> _players = new Dictionary<byte, Players>();
 
+        string IPAddress = "127.0.0.1";
+        ushort InSimPort = 29999;
+        string AdminPW = "0";
+
+        private void LoadInSimSettings()
+        {
+            StreamReader SettingsFile = new StreamReader(DataFolder + "/settings.ini");
+
+            string line = null;
+            while ((line = SettingsFile.ReadLine()) != null)
+            {
+                string[] LineData = line.Split(' ');
+
+                if (LineData[0] == "IP")//IP to the server, default value 127.0.0.1
+                {
+                    try { IPAddress = LineData[2]; }
+                    catch { LogTextToFile("insimError", "Invalid IP at settings.ini, using " + IPAddress); }
+                }
+                else if (LineData[0] == "Port")//InSim port, default value 29999
+                {
+                    try { InSimPort = Convert.ToUInt16(LineData[2]); }
+                    catch { LogTextToFile("insimError", "Invalid Port at settings.ini, using " + InSimPort); }
+                }
+                else if (LineData[0] == "Password")//Admin Password
+                {
+                    try { AdminPW = LineData[2]; }
+                    catch { LogTextToFile("insimError", "Invalid Admin Password at settings.ini"); }
+                }
+                else LogTextToFile("insimError", "Invalid Parameter at settings.ini, ignoring it");
+            }
+            SettingsFile.Close();
+        }
+
         public Form1()
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
@@ -92,6 +128,7 @@ namespace DRS_InSim
 
         void RunInSim()
         {
+            LoadInSimSettings();
 
             // Bind packet events.
             insim.Bind<IS_NCN>(NewConnection);
@@ -118,9 +155,9 @@ namespace DRS_InSim
             // Initialize InSim
             insim.Initialize(new InSimSettings
             {
-                Host = "51.254.134.112", // 51.254.134.112         192.168.3.10
-                Port = 29999,
-                Admin = "2910693997",
+                Host = IPAddress, // 51.254.134.112         192.168.3.10
+                Port = InSimPort,
+                Admin = AdminPW,
                 Prefix = '!',
                 Flags = InSimFlags.ISF_MCI | InSimFlags.ISF_MSO_COLS | InSimFlags.ISF_CON | InSimFlags.ISF_RES_0 | InSimFlags.ISF_RES_1 | InSimFlags.ISF_NLP | InSimFlags.ISF_HLV,
 
@@ -309,19 +346,28 @@ namespace DRS_InSim
                 conn.LapTime = LAP.LTime;
                 conn.NumStops = LAP.NumStops;
 
-                if (conn.SentMSG == false)
+                if (conn.SentMSG == false && conn.Disqualified == false)
                 {
-                    insim.Send(conn.UCID, "^3[" + TrackName + "] ^8Completed a lap: ^3" + string.Format("{0:00}:{1:00}:{2:00}",
+                    if (conn.Disqualified == true)
+                    {
+                        insim.Send(conn.UCID, "^3[" + TrackName + "] ^8INVALID LAP. FALSE START.");
+                        conn.Disqualified = false;
+                        insim.Send("/p_clear " + conn.UName);
+                    }
+                    else
+                    {
+                        insim.Send(conn.UCID, "^3[" + TrackName + "] ^8Completed a lap: ^3" + string.Format("{0:00}:{1:00}:{2:00}",
 (int)_connections[conn.UCID].LapTime.Minutes,
-    _connections[conn.UCID].LapTime.Seconds,
-    _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3" + conn.CarName);
-                    conn.SentMSG = true;
+_connections[conn.UCID].LapTime.Seconds,
+_connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3" + conn.CarName);
+                        conn.SentMSG = true;
+                    }
 
                     
                 }
 
                 conn.SentMSG = false;
-
+                conn.Disqualified = false;
                 
 
             }
@@ -335,6 +381,19 @@ namespace DRS_InSim
             {
                 var conn = GetConnection(RES.PLID);
 
+                if (RES.Confirm == ConfirmationFlags.CONF_PENALTY_30)
+                {
+                    insim.Send(conn.UCID, "^8You've been fined ^1-1 ^8points for ^230-SECOND PENALTY");
+                    conn.points -= 1;
+                    conn.Disqualified = true;
+                }
+
+                if (RES.Confirm == ConfirmationFlags.CONF_PENALTY_45)
+                {
+                    insim.Send(conn.UCID, "^8You've been fined ^1-4 ^8points for ^245-SECOND PENALTY");
+                    conn.points -= 4;
+                    conn.Disqualified = true;
+                }
             }
             catch (Exception e) { LogTextToFile("InSim-Errors", "[" + RES.PLID + "] " + " NCN - Exception: " + e, false); }
         }
