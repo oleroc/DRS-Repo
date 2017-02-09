@@ -16,7 +16,7 @@ namespace DRS_InSim
 
         public string Layoutname = "None";
         public string TrackName = "None";
-        public string InSim_Version = "1.1.2b";
+        public string InSim_Version = "1.1.3";
         public bool enable_db_connection = true;
 
         public string onepts;
