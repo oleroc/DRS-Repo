@@ -12,7 +12,8 @@ Insim Display on Game Screen Properties.
  - Driven distance
  - Points
  - Nickname
- - Additional functionality.
+ 
+Additional functionality.
  - Create a c# Display clientprogram, that pulls data from the SQL base and displays on screens.
  - Create a Web plugin, that pulls data from SQL base and displays on web page.
  - Create a Facebook app that shows data from SQL base
