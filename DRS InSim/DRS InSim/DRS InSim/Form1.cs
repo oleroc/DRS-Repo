@@ -26,7 +26,13 @@ namespace DRS_InSim
         public string threepts;
         public string fourpts;
 
+
         public int dbCount;
+        public int ptsFIRST;
+        public int ptsSECOND;
+        public int ptsTHIRD;
+        public int ptsFORTH;
+
 
         // MySQL Variables
         public SQLInfo SqlInfo = new SQLInfo();
@@ -139,7 +145,7 @@ namespace DRS_InSim
             insim.Bind<IS_CPR>(ClientRenames);
             // insim.Bind<IS_PLL>(PlayerLeave);
             insim.Bind<IS_STA>(OnStateChange);
-            // insim.Bind<IS_BTC>(ButtonClicked);
+            insim.Bind<IS_BTC>(ButtonClick);
             insim.Bind<IS_BFN>(ClearButtons);
             // insim.Bind<IS_VTN>(VoteNotify);
             insim.Bind<IS_AXI>(OnAutocrossInformation);
@@ -189,7 +195,7 @@ namespace DRS_InSim
             {
                 insim.Send(255, "^2Loaded userdata from database");
             }
-       } 
+        }
 
         #region ' Readers and Writers '
         private bool GetUserAdmin(string Username)
@@ -280,6 +286,7 @@ namespace DRS_InSim
 
                 dbCount = SqlInfo.userCount();
 
+
                 if (ConnectedToSQL)
                 {
                     try
@@ -298,7 +305,6 @@ namespace DRS_InSim
                         else
                         {
                             SqlInfo.AddUser(NCN.UName, StringHelper.StripColors(_connections[NCN.UCID].PName), _connections[NCN.UCID].TotalDistance, _connections[NCN.UCID].points);
-
                         }
 
 
@@ -363,12 +369,12 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                         conn.SentMSG = true;
                     }
 
-                    
+
                 }
 
                 conn.SentMSG = false;
                 conn.Disqualified = false;
-                
+
 
             }
             catch (Exception e) { LogTextToFile("InSim-Errors", "[" + LAP.PLID + "] " + " NCN - Exception: " + e, false); }
@@ -614,6 +620,16 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
             { LogTextToFile("error", "[" + CPR.UCID + "] " + StringHelper.StripColors(_connections[CPR.UCID].PName) + "(" + _connections[CPR.UCID].UName + ") BFN - Exception: " + e, false); }
         }
 
+        // Button click
+        void ButtonClick(InSim insim, IS_BTC BTC)
+        {
+            try { BTC_ClientClickedButton(BTC); }
+            catch (Exception e)
+            { LogTextToFile("error", "[" + BTC.UCID + "] " + StringHelper.StripColors(_connections[BTC.UCID].PName) + "(" + _connections[BTC.UCID].UName + ") BTC - Exception: " + e, false); }
+        }
+
+
+
         // Button type
         void ButtonType(InSim insim, IS_BTT BTT)
         {
@@ -621,44 +637,131 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
             {
                 switch (BTT.ClickID)
                 {
+                    #region ' cases '
                     case 32:
 
-                        onepts = BTT.Text;
-
-                        insim.Send(new IS_BTN
+                        if (BTT.Text.Contains("1") || BTT.Text.Contains("2") || BTT.Text.Contains("3") || BTT.Text.Contains("4") || BTT.Text.Contains("5") || BTT.Text.Contains("6") || BTT.Text.Contains("7")
+                            || BTT.Text.Contains("8") || BTT.Text.Contains("9"))
                         {
-                            UCID = BTT.UCID,
-                            ReqI = 32,
-                            ClickID = 32,
-                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
-                            H = 4,
-                            W = 5,
-                            T = 73, // up to down
-                            L = 102, // left to right
-                            Text = "" + BTT.Text,
-                            TypeIn = 3,
-                            Caption = "^0Amount of points to reward 1st place"
-                        });
+                            onepts = BTT.Text;
+
+                            insim.Send(new IS_BTN
+                            {
+                                UCID = BTT.UCID,
+                                ReqI = 32,
+                                ClickID = 32,
+                                BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                H = 4,
+                                W = 5,
+                                T = 73, // up to down
+                                L = 102, // left to right
+                                Text = "^3" + BTT.Text,
+                                TypeIn = 3,
+                                Caption = "^0Amount of points to reward 1st place"
+                            });
+
+                            SqlInfo.updateptsFIRST(Convert.ToInt32(BTT.Text));
+                        }
+                        else
+                        {
+                            insim.Send(BTT.UCID, "^1Invalid input!");
+                        }
 
                         break;
 
                     case 33:
 
-                        twopts = BTT.Text;
+                        if (BTT.Text.Contains("1") || BTT.Text.Contains("2") || BTT.Text.Contains("3") || BTT.Text.Contains("4") || BTT.Text.Contains("5") || BTT.Text.Contains("6") || BTT.Text.Contains("7")
+    || BTT.Text.Contains("8") || BTT.Text.Contains("9"))
+                        {
+                            twopts = BTT.Text;
+
+                            insim.Send(new IS_BTN
+                            {
+                                UCID = BTT.UCID,
+                                ReqI = 33,
+                                ClickID = 33,
+                                BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                H = 4,
+                                W = 5,
+                                T = 77, // up to down
+                                L = 102, // left to right
+                                Text = "^3" + BTT.Text,
+                                TypeIn = 3,
+                                Caption = "^0Amount of points to reward 2nd place"
+                            });
+
+                            SqlInfo.updateptsSECOND(Convert.ToInt32(BTT.Text));
+                        }
+                        else
+                        {
+                            insim.Send(BTT.UCID, "^1Invalid input!");
+                        }
 
                         break;
 
                     case 34:
 
-                        threepts = BTT.Text;
+                        if (BTT.Text.Contains("1") || BTT.Text.Contains("2") || BTT.Text.Contains("3") || BTT.Text.Contains("4") || BTT.Text.Contains("5") || BTT.Text.Contains("6") || BTT.Text.Contains("7")
+    || BTT.Text.Contains("8") || BTT.Text.Contains("9"))
+                        {
+                            threepts = BTT.Text;
+
+                            insim.Send(new IS_BTN
+                            {
+                                UCID = BTT.UCID,
+                                ReqI = 34,
+                                ClickID = 34,
+                                BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                H = 4,
+                                W = 5,
+                                T = 81, // up to down
+                                L = 102, // left to right
+                                Text = "^3" + BTT.Text,
+                                TypeIn = 3,
+                                Caption = "^0Amount of points to reward 3rd place"
+                            });
+
+                            SqlInfo.updateptsTHIRD(Convert.ToInt32(BTT.Text));
+                        }
+                        else
+                        {
+                            insim.Send(BTT.UCID, "^1Invalid input!");
+                        }
 
                         break;
 
                     case 35:
 
-                        fourpts = BTT.Text;
+                        if (BTT.Text.Contains("1") || BTT.Text.Contains("2") || BTT.Text.Contains("3") || BTT.Text.Contains("4") || BTT.Text.Contains("5") || BTT.Text.Contains("6") || BTT.Text.Contains("7")
+     || BTT.Text.Contains("8") || BTT.Text.Contains("9"))
+                        {
+                            onepts = BTT.Text;
+
+                            insim.Send(new IS_BTN
+                            {
+                                UCID = BTT.UCID,
+                                ReqI = 35,
+                                ClickID = 35,
+                                BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                H = 4,
+                                W = 5,
+                                T = 85, // up to down
+                                L = 102, // left to right
+                                Text = "^3" + BTT.Text,
+                                TypeIn = 3,
+                                Caption = "^0Amount of points to reward 4th place"
+                            });
+
+                            SqlInfo.updateptsFORTH(Convert.ToInt32(BTT.Text));
+                        }
+                        else
+                        {
+                            insim.Send(BTT.UCID, "^1Invalid input!");
+                        }
 
                         break;
+                        #endregion
                 }
             }
             catch (Exception e)
@@ -759,6 +862,19 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                 });
 
 
+            }
+        }
+
+        private void deleteBtn(byte ucid, byte reqi, bool sendbfn, byte clickid)
+        {
+            if (sendbfn == true)
+            {
+                IS_BFN bfn = new IS_BFN();
+                bfn.ClickID = clickid;
+                bfn.UCID = ucid;
+                bfn.ReqI = reqi;
+
+                insim.Send(bfn);
             }
         }
     }

@@ -1,6 +1,0 @@
-2/9/2017 5:15:52 PM: MCI - Exception: System.NullReferenceException: Object reference not set to an instance of an object.
-   at DRS_InSim.Form1.MultiCarInfo(InSim insim, IS_MCI mci) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 533
-2/9/2017 5:19:50 PM: MCI - Exception: System.NullReferenceException: Object reference not set to an instance of an object.
-   at DRS_InSim.Form1.MultiCarInfo(InSim insim, IS_MCI mci) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 542
-2/9/2017 5:20:15 PM: MCI - Exception: System.NullReferenceException: Object reference not set to an instance of an object.
-   at DRS_InSim.Form1.MultiCarInfo(InSim insim, IS_MCI mci) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 542

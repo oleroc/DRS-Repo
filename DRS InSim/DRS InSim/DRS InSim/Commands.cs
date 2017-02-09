@@ -24,19 +24,15 @@ namespace DRS_InSim
 
                         switch (command[0])
                         {
-
-                            case "!test":
-
-                                insim.Send(mso.UCID, "^3[" + TrackName + "] ^8Completed a lap: ^3" + string.Format("{0:00}:{1:00}:{2:00}", (int)_connections[mso.UCID].LapTime.Minutes,
-_connections[mso.UCID].LapTime.Seconds,
-_connections[mso.UCID].LapTime.Milliseconds
-.ToString().Remove(0, 1)) + " ^8- ^3" + _connections[mso.UCID].CarName);
-                                break;
-
                             case "!ap":
                             case "!adminpanel":
                                 var conn = _connections[mso.UCID];
-                                
+
+                                ptsFIRST = SqlInfo.showFIRST();
+                                ptsSECOND = SqlInfo.showSECOND();
+                                ptsTHIRD = SqlInfo.showTHIRD();
+                                ptsFORTH = SqlInfo.showFORTH();
+
                                 if (conn.IsAdmin == true)
                                 {
                                     if (conn.inAP == false)
@@ -93,7 +89,7 @@ _connections[mso.UCID].LapTime.Milliseconds
                                             W = 13,
                                             T = 73, // up to down
                                             L = 88, // left to right
-                                            Text = "^71. place:"
+                                            Text = "^31st. Place:"
                                         });
 
                                         insim.Send(new IS_BTN
@@ -106,7 +102,7 @@ _connections[mso.UCID].LapTime.Milliseconds
                                             W = 13,
                                             T = 77, // up to down
                                             L = 88, // left to right
-                                            Text = "^72. place:"
+                                            Text = "^32nd Place:"
                                         });
 
                                         insim.Send(new IS_BTN
@@ -119,7 +115,7 @@ _connections[mso.UCID].LapTime.Milliseconds
                                             W = 13,
                                             T = 81, // up to down
                                             L = 88, // left to right
-                                            Text = "^73. place:"
+                                            Text = "^33rd Place:"
                                         });
 
                                         insim.Send(new IS_BTN
@@ -132,7 +128,7 @@ _connections[mso.UCID].LapTime.Milliseconds
                                             W = 13,
                                             T = 85, // up to down
                                             L = 88, // left to right
-                                            Text = "^74. place:"
+                                            Text = "^34th Place:"
                                         });
 
 
@@ -150,7 +146,7 @@ _connections[mso.UCID].LapTime.Milliseconds
                                             W = 5,
                                             T = 73, // up to down
                                             L = 102, // left to right
-                                            Text = "",
+                                            Text = "^3" + ptsFIRST,
                                             TypeIn = 3,
                                             Caption = "^0Amount of points to reward 1st place"
                                         });
@@ -165,7 +161,7 @@ _connections[mso.UCID].LapTime.Milliseconds
                                             W = 5,
                                             T = 77, // up to down
                                             L = 102, // left to right
-                                            Text = "",
+                                            Text = "^3" + ptsSECOND,
                                             TypeIn = 3,
                                             Caption = "^0Amount of points to reward 2nd place"
                                         });
@@ -180,7 +176,7 @@ _connections[mso.UCID].LapTime.Milliseconds
                                             W = 5,
                                             T = 81, // up to down
                                             L = 102, // left to right
-                                            Text = "",
+                                            Text = "^3" + ptsTHIRD,
                                             TypeIn = 3,
                                             Caption = "^0Amount of points to reward 3rd place"
                                         });
@@ -195,9 +191,35 @@ _connections[mso.UCID].LapTime.Milliseconds
                                             W = 5,
                                             T = 85, // up to down
                                             L = 102, // left to right
-                                            Text = "",
+                                            Text = "^3" + ptsFORTH,
                                             TypeIn = 3,
                                             Caption = "^0Amount of points to reward 4th place"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 36,
+                                            ClickID = 36,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 9,
+                                            T = 73, // up to down
+                                            L = 111, // left to right
+                                            Text = "^7DEFAULT"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 37,
+                                            ClickID = 37,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 9,
+                                            T = 85, // up to down
+                                            L = 111, // left to right
+                                            Text = "^7CLOSE"
                                         });
 
 

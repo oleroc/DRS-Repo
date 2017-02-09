@@ -34,7 +34,7 @@ namespace DRS_InSim
                 SQL.Open();
 
                 Query("CREATE TABLE IF NOT EXISTS users(PRIMARY KEY(username),username CHAR(25) NOT NULL,nickname CHAR(40) NOT NULL,distance decimal(10),points int(10));");
-                // Query("CREATE TABLE IF NOT EXISTS admin_settings(PRIMARY KEY(settings),settings CHAR(25) NOT NULL,firstplace byte(3), secondplace byte(3), thirdplace byte(3), forthplace byte(3));");
+                Query("CREATE TABLE IF NOT EXISTS admin_settings(firstplace int(3), secondplace int(3), thirdplace int(3), forthplace int(3));");
             }
             catch { return false; }
             return true;
@@ -81,6 +81,86 @@ namespace DRS_InSim
         public void deleteownDIST(string username)
         {
             Query("UPDATE users set distance=0 WHERE username='" + username + "';");
+        }
+
+        public int showFIRST()
+        {
+            MySqlCommand query = new MySqlCommand();
+            query.Connection = SQL;
+            query.CommandText = "SELECT firstplace FROM admin_settings";
+            query.Prepare();
+            MySqlDataReader dr = query.ExecuteReader();
+
+            if (dr.Read())
+                if (dr.GetString(0) != "")
+                    dr.Close();
+
+            return Convert.ToInt32(query.ExecuteScalar());
+        }
+
+        public void updateptsFIRST(int number)
+        {
+            Query("UPDATE admin_settings SET firstplace=" + number + ";");
+        }
+
+        public void updateptsSECOND(int number)
+        {
+            Query("UPDATE admin_settings SET secondplace=" + number + ";");
+        }
+
+        public void updateptsTHIRD(int number)
+        {
+            Query("UPDATE admin_settings SET thirdplace=" + number + ";");
+        }
+
+        public void updateptsFORTH(int number)
+        {
+            Query("UPDATE admin_settings SET forthplace=" + number + ";");
+        }
+
+        public int showSECOND()
+        {
+            MySqlCommand query = new MySqlCommand();
+            query.Connection = SQL;
+            query.CommandText = "SELECT secondplace FROM admin_settings";
+            query.Prepare();
+            MySqlDataReader dr = query.ExecuteReader();
+
+            if (dr.Read())
+                if (dr.GetString(0) != "")
+                    dr.Close();
+
+            return Convert.ToInt32(query.ExecuteScalar());
+        }
+
+        public int showTHIRD()
+        {
+            MySqlCommand query = new MySqlCommand();
+            query.Connection = SQL;
+            query.CommandText = "SELECT thirdplace FROM admin_settings";
+            query.Prepare();
+            MySqlDataReader dr = query.ExecuteReader();
+
+            if (dr.Read())
+                if (dr.GetString(0) != "")
+                    dr.Close();
+
+            return Convert.ToInt32(query.ExecuteScalar());
+        }
+
+        public int showFORTH()
+        {
+            MySqlCommand query = new MySqlCommand();
+            query.Connection = SQL;
+            query.CommandText = "SELECT forthplace FROM admin_settings";
+            query.Prepare();
+            MySqlDataReader dr = query.ExecuteReader();
+
+            if (dr.Read())
+                if (dr.GetString(0) != "")
+                    dr.Close();
+
+            return Convert.ToInt32(query.ExecuteScalar());
         }
 
 

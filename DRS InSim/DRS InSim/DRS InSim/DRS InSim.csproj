@@ -66,6 +66,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ButtonClick.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Commands.cs">
       <SubType>Form</SubType>
     </Compile>
