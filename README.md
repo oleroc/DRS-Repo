@@ -27,3 +27,4 @@ To-do-list:
  - Improve MySQL database functions
  - !info
  - Show a table of users included with points to their name after a race is finished
+ - Using a settings.ini file to start up InSim
