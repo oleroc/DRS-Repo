@@ -16,3 +16,47 @@
    at MySql.Data.MySqlClient.MySqlCommand.ExecuteScalar()
    at DRS_InSim.SQLInfo.deletePoints() in C:\Users\Peter Pan\Desktop\DRS-Repo-master\DRS InSim\DRS InSim\DRS InSim\SQL.cs:line 79
    at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Desktop\DRS-Repo-master\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 229
+2/9/2017 11:21:43 AM: [10] Kriss(tpx) NPL - Exception: System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at DRS_InSim.Form1.UpdateGui(Byte UCID, Boolean main) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 663
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 223
+2/9/2017 11:36:52 AM: [10] Kriss(tpx) NPL - Exception: System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 30
+2/9/2017 11:36:52 AM: [10] Kriss(tpx) NPL - Exception: System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 30
+2/9/2017 11:36:53 AM: [10] Kriss(tpx) NPL - Exception: System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 30
+2/9/2017 11:36:54 AM: [10] Kriss(tpx) NPL - Exception: System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 30
+2/9/2017 11:36:55 AM: [10] Kriss(tpx) NPL - Exception: System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 30
+2/9/2017 11:36:56 AM: [10] Kriss(tpx) NPL - Exception: System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 30
+2/9/2017 11:36:57 AM: [10] Kriss(tpx) NPL - Exception: System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 30
+2/9/2017 11:36:58 AM: [10] Kriss(tpx) NPL - Exception: System.FormatException: Index (zero based) must be greater than or equal to zero and less than the size of the argument list.
+   at System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   at System.String.Format(String format, Object arg0)
+   at DRS_InSim.Form1.MessageReceived(InSim insim, IS_MSO mso) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Commands.cs:line 30

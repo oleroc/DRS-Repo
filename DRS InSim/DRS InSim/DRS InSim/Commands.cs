@@ -25,6 +25,14 @@ namespace DRS_InSim
                         switch (command[0])
                         {
 
+                            case "!test":
+
+                                insim.Send(mso.UCID, "^3[" + TrackName + "] ^8Completed a lap: ^3" + string.Format("{0:00}:{1:00}:{2:00}", (int)_connections[mso.UCID].LapTime.Minutes,
+_connections[mso.UCID].LapTime.Seconds,
+_connections[mso.UCID].LapTime.Milliseconds
+.ToString().Remove(0, 1)) + " ^8- ^3" + _connections[mso.UCID].CarName);
+                                break;
+
                             case "!ap":
                             case "!adminpanel":
                                 var conn = _connections[mso.UCID];
@@ -220,6 +228,7 @@ namespace DRS_InSim
                                 _connections[mso.UCID].points = 0;
                                 SqlInfo.deleteownPTS(_connections[mso.UCID].UName);
                                 insim.Send(mso.UCID, "^8Your points has reset");
+                                UpdateGui(255, true);
                                 break;
 
                             case "!deletedist":
@@ -228,6 +237,7 @@ namespace DRS_InSim
                                 _connections[mso.UCID].TotalDistance = 0;
                                 SqlInfo.deleteownDIST(_connections[mso.UCID].UName);
                                 insim.Send(mso.UCID, "^8Your total distance has reset");
+                                UpdateGui(255, true);
                                 break;
 
                             case "!deleteptsall":
@@ -242,6 +252,7 @@ namespace DRS_InSim
                                     }
 
                                     insim.Send(mso.UCID, "^3" + dbCount + " ^8entries of column ^3points ^8deleted.");
+                                    UpdateGui(255, true);
                                 }
                                 else
                                 {
@@ -262,6 +273,7 @@ namespace DRS_InSim
                                     }
 
                                     insim.Send(mso.UCID, "^3" + dbCount + " ^8entries of column ^3distance ^8deleted.");
+                                    UpdateGui(255, true);
                                 }
                                 else
                                 {

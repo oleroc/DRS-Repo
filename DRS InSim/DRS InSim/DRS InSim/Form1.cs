@@ -314,7 +314,7 @@ namespace DRS_InSim
                     insim.Send(conn.UCID, "^3[" + TrackName + "] ^8Completed a lap: ^3" + string.Format("{0:00}:{1:00}:{2:00}",
 (int)_connections[conn.UCID].LapTime.Minutes,
     _connections[conn.UCID].LapTime.Seconds,
-    _connections[conn.UCID].LapTime.Milliseconds) + " ^8- ^3" + conn.CarName);
+    _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3" + conn.CarName);
                     conn.SentMSG = true;
 
                     

@@ -60,7 +60,7 @@ namespace DRS_InSim
 
                             if (_connections[conn.UCID].OnTrack == false)
                             {
-                                UpdateGui(conn.UCID, true);
+                                // UpdateGui(conn.UCID, true);
                             }
                         }
                         catch (Exception EX)
@@ -80,9 +80,5 @@ namespace DRS_InSim
                 MessageBox.Show("" + f.Message, "AN ERROR OCCURED");
             }
         }
-
-
-
-
     }
 }
