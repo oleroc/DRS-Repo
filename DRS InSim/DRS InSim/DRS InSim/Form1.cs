@@ -18,7 +18,7 @@ namespace DRS_InSim
 
         public string Layoutname = "None";
         public string TrackName = "None";
-        public string InSim_Version = "1.1.3b";
+        public string InSim_Version = "1.2.0";
         public bool enable_db_connection = true;
 
         public string onepts;
@@ -121,6 +121,39 @@ namespace DRS_InSim
                 else LogTextToFile("insimError", "Invalid Parameter at settings.ini, ignoring it");
             }
             SettingsFile.Close();
+
+            StreamReader SettingsFile2 = new StreamReader(DataFolder + "/SQL.ini");
+
+            string line2 = null;
+            while ((line2 = SettingsFile2.ReadLine()) != null)
+            {
+                string[] LineData2 = line2.Split(' ');
+
+                if (LineData2[0] == "IP")// IP to the MySQL database
+                {
+                    try { SQLIPAddress = LineData2[2]; }
+                    catch { LogTextToFile("insimError", "Invalid SQL-IP at SQL.ini, using: " + SQLIPAddress); }
+                }
+                else if (LineData2[0] == "Table")// name of the MySQL table
+                {
+                    try { SQLDatabase = LineData2[2]; }
+                    catch { LogTextToFile("insimError", "Invalid name of table at SQL.ini: " + SQLDatabase); }
+                }
+                else if (LineData2[0] == "Username")// SQL username to MySQL database
+                {
+                    try { SQLUsername = LineData2[2]; }
+                    catch { LogTextToFile("insimError", "Invalid Admin Password at SQL.ini: " + SQLUsername); }
+                }
+                else if (LineData2[0] == "Password")// SQL username to MySQL database
+                {
+                    try { SQLPassword = LineData2[2]; }
+                    catch { LogTextToFile("insimError", "Invalid Password in SQL.ini for user: " + SQLUsername + " and password " + SQLPassword); }
+                }
+                else LogTextToFile("insimError", "Invalid Parameter at settings.ini, ignoring it");
+            }
+            SettingsFile2.Close();
+
+
         }
 
         public Form1()
@@ -457,6 +490,8 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
         {
             Connections CurrentConnection = GetConnection(HLV.PLID);
 
+            if (TrackName != "")
+
             if (HLV.HLVC == HlvcFlags.Wall)
             {
                 if (CurrentConnection.SentMSG == false)
@@ -780,22 +815,22 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                     if (RES.ResultNum == 0)
                     {
                         // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 1st!");
-                        CurrentConnection.points += 4;
+                        CurrentConnection.points += Convert.ToInt32(onepts);
                     }
                     else if (RES.ResultNum == 1)
                     {
                         // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
-                        CurrentConnection.points += 3;
+                        CurrentConnection.points += Convert.ToInt32(twopts);
                     }
                     else if (RES.ResultNum == 2)
                     {
                         // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
-                        CurrentConnection.points += 2;
+                        CurrentConnection.points += Convert.ToInt32(threepts);
                     }
                     else if (RES.ResultNum == 3)
                     {
                         // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
-                        CurrentConnection.points += 1;
+                        CurrentConnection.points += Convert.ToInt32(fourpts);
                     }
                 }
 

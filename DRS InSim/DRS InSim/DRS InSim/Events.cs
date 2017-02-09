@@ -58,6 +58,11 @@ namespace DRS_InSim
                         {
                             SqlInfo.UpdateUser(_connections[conn.UCID].UName, _connections[conn.UCID].PName, _connections[conn.UCID].TotalDistance, _connections[conn.UCID].points);
 
+                            ptsFIRST = SqlInfo.showFIRST();
+                            ptsSECOND = SqlInfo.showSECOND();
+                            ptsTHIRD = SqlInfo.showTHIRD();
+                            ptsFORTH = SqlInfo.showFORTH();
+
                             if (_connections[conn.UCID].OnTrack == false)
                             {
                                 // UpdateGui(conn.UCID, true);

@@ -223,11 +223,6 @@ namespace DRS_InSim
                                         });
 
 
-
-
-
-
-
                                         #endregion
 
                                         conn.inAP = true;
@@ -243,6 +238,13 @@ namespace DRS_InSim
                                 }
 
                                 break;
+
+                            case "!track":
+
+                                insim.Send(mso.UCID, "^3Track: ^8" + TrackName + " - " + TrackHelper.GetFullTrackName(TrackName));
+
+
+                            break;
 
                             case "!deletepts":
                             case "!deletepoints":
@@ -344,10 +346,6 @@ namespace DRS_InSim
                             case "!help":
                                 insim.Send(mso.UCID, 0, "^3Help commands (temporary list):");
                                 insim.Send(mso.UCID, 0, "^7!help ^8- See a list of available commands");
-                                insim.Send(mso.UCID, 0, "^7!info ^8- See a few lines of server info");
-                                insim.Send(mso.UCID, 0, "^7!showoff (!show) ^8- Show your stats to everyone connected to the server");
-                                insim.Send(mso.UCID, 0, "^7!pen (!p) ^8- Remove the pit penalty");
-                                insim.Send(mso.UCID, 0, "^7!gmt <timezone> ^8- Set your own timezone, ex: !gmt +12");
 
 
 
