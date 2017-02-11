@@ -157,7 +157,6 @@ namespace DRS_InSim
                         break;
 
                     case 36:
-
                         if (conn.inAP == true)
                         {
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 25);
