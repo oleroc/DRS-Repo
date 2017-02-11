@@ -59,6 +59,7 @@ namespace DRS_InSim
             public decimal TotalDistance;
             public bool KMHoverMPH;
             public int points;
+            public bool inStats;
 
             // Laps
             public int LapsDone;
@@ -628,12 +629,17 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                 {
                     _connections[BFN.UCID].inAP = false;
                 }
+
+                if (_connections[BFN.UCID].inStats == true)
+                {
+                    _connections[BFN.UCID].inStats = false;
+                }
             }
             catch (Exception e)
             { LogTextToFile("error", "[" + BFN.UCID + "] " + StringHelper.StripColors(_connections[BFN.UCID].PName) + "(" + _connections[BFN.UCID].UName + ") BFN - Exception: " + e, false); }
         }
 
-        // BuTton FunctioN (IS_BFN, SHIFT+I SHIFT+B)
+        // Client renames
         void ClientRenames(InSim insim, IS_CPR CPR)
         {
             try
@@ -657,7 +663,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                 UpdateGui(CPR.UCID, true);
             }
             catch (Exception e)
-            { LogTextToFile("error", "[" + CPR.UCID + "] " + StringHelper.StripColors(_connections[CPR.UCID].PName) + "(" + _connections[CPR.UCID].UName + ") BFN - Exception: " + e, false); }
+            { LogTextToFile("error", "[" + CPR.UCID + "] " + StringHelper.StripColors(_connections[CPR.UCID].PName) + "(" + _connections[CPR.UCID].UName + ") CPR - Exception: " + e, false); }
         }
 
         // Button click
@@ -859,7 +865,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                 UpdateGui(CurrentConnection.UCID, true);
             }
             catch (Exception e)
-            { LogTextToFile("error", "[" + RES.PLID + "] " + "" + "() BFN - Exception: " + e, false); }
+            { LogTextToFile("error", "[" + RES.PLID + "] " + "" + "() RES - Exception: " + e, false); }
         }
 
         void UpdateGui(byte UCID, bool main)
