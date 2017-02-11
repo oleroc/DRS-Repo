@@ -18,7 +18,7 @@ namespace DRS_InSim
 
         public string Layoutname = "None";
         public string TrackName = "None";
-        public string InSim_Version = "1.2.0";
+        public string InSim_Version = "1.3.0";
         public bool enable_db_connection = true;
 
         public string onepts;
@@ -535,8 +535,8 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
             {
                 if (AXI.NumO != 0)
                 {
-                    Layoutname = AXI.LName;
-                    if (AXI.ReqI == 0) insim.Send("Layout ^1" + Layoutname + " ^3loaded");
+                    Layoutname = AXI.LName.ToString();
+                    if (AXI.ReqI == 0) insim.Send(255, "Layout ^1" + Layoutname + " ^3loaded");
                 }
             }
             catch (Exception EX) { LogTextToFile("packetError", "AXI - " + EX.Message); }

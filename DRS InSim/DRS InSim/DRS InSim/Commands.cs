@@ -275,12 +275,12 @@ namespace DRS_InSim
                                             UCID = mso.UCID,
                                             ReqI = 39,
                                             ClickID = 39,
-                                            BStyle = ButtonStyles.ISB_LEFT,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
                                             H = 4,
                                             W = 18,
                                             T = 92, // up to down
                                             L = 102, // left to right
-                                            Text = "^7/axlist <track>"
+                                            Text = "^7/axlist"
                                         });
 
                                         insim.Send(new IS_BTN

@@ -87,3 +87,5 @@
    at DRS_InSim.Form1.MultiCarInfo(InSim insim, IS_MCI mci) in C:\Users\Peter Pan\Desktop\DRS-Repo-master\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 588
 2/11/2017 12:53:12 AM: MCI - Exception: System.NullReferenceException: Object reference not set to an instance of an object.
    at DRS_InSim.Form1.MultiCarInfo(InSim insim, IS_MCI mci) in C:\Users\Peter Pan\Desktop\DRS-Repo-master\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 588
+2/11/2017 1:49:27 AM: MCI - Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at DRS_InSim.Form1.MultiCarInfo(InSim insim, IS_MCI mci) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 588
