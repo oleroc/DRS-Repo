@@ -28,11 +28,11 @@ namespace DRS_InSim
                             case "!adminpanel":
                                 var conn = _connections[mso.UCID];
 
-                                ptsFIRST = SqlInfo.showFIRST();
-                                ptsSECOND = SqlInfo.showSECOND();
-                                ptsTHIRD = SqlInfo.showTHIRD();
-                                ptsFORTH = SqlInfo.showFORTH();
-
+                                ptsFIRST = Convert.ToInt32(onepts);
+                                ptsSECOND = Convert.ToInt32(twopts);
+                                ptsTHIRD = Convert.ToInt32(threepts);
+                                ptsFORTH = Convert.ToInt32(fourpts);
+                                
                                 if (conn.IsAdmin == true)
                                 {
                                     if (conn.inAP == false)
@@ -146,7 +146,7 @@ namespace DRS_InSim
                                             W = 5,
                                             T = 73, // up to down
                                             L = 102, // left to right
-                                            Text = "^3" + ptsFIRST,
+                                            Text = "^7" + ptsFIRST,
                                             TypeIn = 3,
                                             Caption = "^0Amount of points to reward 1st place"
                                         });
@@ -161,7 +161,7 @@ namespace DRS_InSim
                                             W = 5,
                                             T = 77, // up to down
                                             L = 102, // left to right
-                                            Text = "^3" + ptsSECOND,
+                                            Text = "^7" + ptsSECOND,
                                             TypeIn = 3,
                                             Caption = "^0Amount of points to reward 2nd place"
                                         });
@@ -176,7 +176,7 @@ namespace DRS_InSim
                                             W = 5,
                                             T = 81, // up to down
                                             L = 102, // left to right
-                                            Text = "^3" + ptsTHIRD,
+                                            Text = "^7" + ptsTHIRD,
                                             TypeIn = 3,
                                             Caption = "^0Amount of points to reward 3rd place"
                                         });
@@ -191,7 +191,7 @@ namespace DRS_InSim
                                             W = 5,
                                             T = 85, // up to down
                                             L = 102, // left to right
-                                            Text = "^3" + ptsFORTH,
+                                            Text = "^7" + ptsFORTH,
                                             TypeIn = 3,
                                             Caption = "^0Amount of points to reward 4th place"
                                         });
@@ -221,6 +221,95 @@ namespace DRS_InSim
                                             L = 111, // left to right
                                             Text = "^7CLOSE"
                                         });
+
+
+
+
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 38,
+                                            ClickID = 38,
+                                            BStyle = ButtonStyles.ISB_RIGHT,
+                                            H = 4,
+                                            W = 19,
+                                            T = 92, // up to down
+                                            L = 82, // left to right
+                                            Text = "^3Layout Database:"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 40,
+                                            ClickID = 40,
+                                            BStyle = ButtonStyles.ISB_RIGHT,
+                                            H = 4,
+                                            W = 13,
+                                            T = 96, // up to down
+                                            L = 88, // left to right
+                                            Text = "^3Load layout:"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 42,
+                                            ClickID = 42,
+                                            BStyle = ButtonStyles.ISB_RIGHT,
+                                            H = 4,
+                                            W = 13,
+                                            T = 100, // up to down
+                                            L = 88, // left to right
+                                            Text = "^3Save layout:"
+                                        });
+
+
+
+
+
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 39,
+                                            ClickID = 39,
+                                            BStyle = ButtonStyles.ISB_LEFT,
+                                            H = 4,
+                                            W = 18,
+                                            T = 92, // up to down
+                                            L = 102, // left to right
+                                            Text = "^7/axlist <track>"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 41,
+                                            ClickID = 41,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 8,
+                                            T = 96, // up to down
+                                            L = 102, // left to right
+                                            Text = "^7Load"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 43,
+                                            ClickID = 43,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 8,
+                                            T = 100, // up to down
+                                            L = 102, // left to right
+                                            Text = "^7Save"
+                                        });
+
+
 
 
                                         #endregion

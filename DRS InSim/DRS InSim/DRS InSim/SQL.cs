@@ -83,21 +83,6 @@ namespace DRS_InSim
             Query("UPDATE users set distance=0 WHERE username='" + username + "';");
         }
 
-        public int showFIRST()
-        {
-            MySqlCommand query = new MySqlCommand();
-            query.Connection = SQL;
-            query.CommandText = "SELECT firstplace FROM admin_settings";
-            query.Prepare();
-            MySqlDataReader dr = query.ExecuteReader();
-
-            if (dr.Read())
-                if (dr.GetString(0) != "")
-                    dr.Close();
-
-            return Convert.ToInt32(query.ExecuteScalar());
-        }
-
         public void updateptsFIRST(int number)
         {
             Query("UPDATE admin_settings SET firstplace=" + number + ";");
@@ -116,6 +101,21 @@ namespace DRS_InSim
         public void updateptsFORTH(int number)
         {
             Query("UPDATE admin_settings SET forthplace=" + number + ";");
+        }
+
+        public int showFIRST()
+        {
+            MySqlCommand query = new MySqlCommand();
+            query.Connection = SQL;
+            query.CommandText = "SELECT firstplace FROM admin_settings";
+            query.Prepare();
+            MySqlDataReader dr = query.ExecuteReader();
+
+            if (dr.Read())
+                if (dr.GetString(0) != "")
+                    dr.Close();
+
+            return Convert.ToInt32(query.ExecuteScalar());
         }
 
         public int showSECOND()

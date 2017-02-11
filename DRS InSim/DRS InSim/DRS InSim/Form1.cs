@@ -26,13 +26,11 @@ namespace DRS_InSim
         public string threepts;
         public string fourpts;
 
-
         public int dbCount;
         public int ptsFIRST;
         public int ptsSECOND;
         public int ptsTHIRD;
         public int ptsFORTH;
-
 
         // MySQL Variables
         public SQLInfo SqlInfo = new SQLInfo();
@@ -317,9 +315,6 @@ namespace DRS_InSim
                     points = 0
                 });
 
-                dbCount = SqlInfo.userCount();
-
-
                 if (ConnectedToSQL)
                 {
                     try
@@ -334,6 +329,14 @@ namespace DRS_InSim
 
                             // Welcome messages
                             insim.Send(NCN.UCID, "^8Welcome back, " + NCN.PName);
+
+                            dbCount = SqlInfo.userCount();
+
+                            onepts = Convert.ToString(SqlInfo.showFIRST());
+                            twopts = Convert.ToString(SqlInfo.showSECOND());
+                            threepts = Convert.ToString(SqlInfo.showTHIRD());
+                            fourpts = Convert.ToString(SqlInfo.showFORTH());
+
                         }
                         else
                         {
@@ -470,6 +473,8 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
 
                 // if (CurrentConnection.SentMSG)
                 CurrentConnection.CarName = NPL.CName;
+
+                
             }
             catch (Exception e) { LogTextToFile("InSim-Errors", "[" + NPL.PLID + "] " + " NCN - Exception: " + e, false); }
         }
@@ -690,7 +695,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                                 W = 5,
                                 T = 73, // up to down
                                 L = 102, // left to right
-                                Text = "^3" + BTT.Text,
+                                Text = "^7" + BTT.Text,
                                 TypeIn = 3,
                                 Caption = "^0Amount of points to reward 1st place"
                             });
@@ -721,7 +726,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                                 W = 5,
                                 T = 77, // up to down
                                 L = 102, // left to right
-                                Text = "^3" + BTT.Text,
+                                Text = "^7" + BTT.Text,
                                 TypeIn = 3,
                                 Caption = "^0Amount of points to reward 2nd place"
                             });
@@ -752,7 +757,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                                 W = 5,
                                 T = 81, // up to down
                                 L = 102, // left to right
-                                Text = "^3" + BTT.Text,
+                                Text = "^7" + BTT.Text,
                                 TypeIn = 3,
                                 Caption = "^0Amount of points to reward 3rd place"
                             });
@@ -783,7 +788,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                                 W = 5,
                                 T = 85, // up to down
                                 L = 102, // left to right
-                                Text = "^3" + BTT.Text,
+                                Text = "^7" + BTT.Text,
                                 TypeIn = 3,
                                 Caption = "^0Amount of points to reward 4th place"
                             });
@@ -816,21 +821,38 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                     {
                         // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 1st!");
                         CurrentConnection.points += Convert.ToInt32(onepts);
+                        
+                        if (Convert.ToInt32(onepts) != 0)
+                        {
+                            insim.Send(255, "^7" + CurrentConnection.PName + " ^8earned ^2" + Convert.ToInt32(onepts) + " points");
+                        }
                     }
                     else if (RES.ResultNum == 1)
                     {
                         // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
                         CurrentConnection.points += Convert.ToInt32(twopts);
+                        if (Convert.ToInt32(twopts) != 0)
+                        {
+                            insim.Send(255, "^7" + CurrentConnection.PName + " ^8earned ^2" + Convert.ToInt32(twopts) + " points");
+                        }
                     }
                     else if (RES.ResultNum == 2)
                     {
                         // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
                         CurrentConnection.points += Convert.ToInt32(threepts);
+                        if (Convert.ToInt32(threepts) != 0)
+                        {
+                            insim.Send(255, "^7" + CurrentConnection.PName + " ^8earned ^2" + Convert.ToInt32(threepts) + " points");
+                        }
                     }
                     else if (RES.ResultNum == 3)
                     {
                         // insim.Send(255, "" + _connections[CurrentConnection.UCID].PName + " ^8finished 2nd!");
                         CurrentConnection.points += Convert.ToInt32(fourpts);
+                        if (Convert.ToInt32(fourpts) != 0)
+                        {
+                            insim.Send(255, "^7" + CurrentConnection.PName + " ^8earned ^2" + Convert.ToInt32(fourpts) + " points");
+                        }
                     }
                 }
 
@@ -857,18 +879,36 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                     L = 66,
                 });
 
-                insim.Send(new IS_BTN
+                if (_connections[UCID].TotalDistance / 1000 > 999)
                 {
-                    UCID = UCID,
-                    ReqI = 2,
-                    ClickID = 2,
-                    BStyle = ButtonStyles.ISB_LEFT,
-                    H = 5,
-                    W = 20,
-                    T = 1,
-                    L = 67,
-                    Text = "^3Distance: ^7" + string.Format("{0:0.0}", _connections[UCID].TotalDistance / 1000) + " km"
-                });
+                    insim.Send(new IS_BTN
+                    {
+                        UCID = UCID,
+                        ReqI = 2,
+                        ClickID = 2,
+                        BStyle = ButtonStyles.ISB_LEFT,
+                        H = 5,
+                        W = 20,
+                        T = 1,
+                        L = 67,
+                        Text = "^3Distance: ^7" + string.Format("{0:0,0.0}", _connections[UCID].TotalDistance / 1000) + " km"
+                    });
+                }
+                else
+                {
+                    insim.Send(new IS_BTN
+                    {
+                        UCID = UCID,
+                        ReqI = 2,
+                        ClickID = 2,
+                        BStyle = ButtonStyles.ISB_LEFT,
+                        H = 5,
+                        W = 20,
+                        T = 1,
+                        L = 67,
+                        Text = "^3Distance: ^7" + string.Format("{0:0.0}", _connections[UCID].TotalDistance / 1000) + " km"
+                    });
+                }
 
                 insim.Send(new IS_BTN
                 {
@@ -880,7 +920,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                     W = 31,
                     T = 1,
                     L = 87,
-                    Text = "^7" + _connections[UCID].PName
+                    Text = "^3- ^7" + TrackName + " ^3-"
                 });
 
                 insim.Send(new IS_BTN

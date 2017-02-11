@@ -74,8 +74,29 @@ namespace DRS_InSim
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 35);
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 36);
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 37);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 38);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 39);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 40);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 41);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 42);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 43);
                             conn.inAP = false;
                         }
+
+                        break;
+
+                    case 39:
+
+                        //  A single line for simple packets
+                        insim.Send(new IS_MST { Msg = "/axlist" });
+
+                        break;
+
+                    case 41:
+
+                        break;
+
+                    case 43:
 
                         break;
                 }
