@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using InSimDotNet;
 using InSimDotNet.Packets;
 using InSimDotNet.Helpers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DRS_InSim
 {
@@ -35,8 +37,8 @@ namespace DRS_InSim
                                         ReqI = 25,
                                         ClickID = 25,
                                         BStyle = ButtonStyles.ISB_DARK,
-                                        H = 80,
-                                        W = 90,
+                                        H = 87,
+                                        W = 111,
                                         T = 43, // up to down
                                         L = 54, // left to right
                                     });
@@ -87,7 +89,7 @@ namespace DRS_InSim
                                         ClickID = 29,
                                         BStyle = ButtonStyles.ISB_LIGHT,
                                         H = 4,
-                                        W = 17,
+                                        W = 22,
                                         T = 45, // up to down
                                         L = 107, // left to right
                                         Text = "^7-- Vehicle --"
@@ -102,52 +104,230 @@ namespace DRS_InSim
                                         H = 4,
                                         W = 17,
                                         T = 45, // up to down
-                                        L = 124, // left to right
+                                        L = 129, // left to right
                                         Text = "^7-- Plate --"
+                                    });
+
+                                    insim.Send(new IS_BTN
+                                    {
+                                        UCID = mso.UCID,
+                                        ReqI = 116,
+                                        ClickID = 116,
+                                        BStyle = ButtonStyles.ISB_LIGHT,
+                                        H = 4,
+                                        W = 17,
+                                        T = 45, // up to down
+                                        L = 146, // left to right
+                                        Text = "^7-- Points --"
+                                    });
+
+                                    insim.Send(new IS_BTN
+                                    {
+                                        UCID = mso.UCID,
+                                        ReqI = 134,
+                                        ClickID = 134,
+                                        BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                        H = 10,
+                                        W = 107,
+                                        T = 118, // up to down
+                                        L = 56, // left to right
+                                        Text = "^1›^3›^1›^3›^1› ^7CLOSE WINDOW ^1‹^3‹^1‹^3‹^1‹"
                                     });
 
                                     byte numbers = 1;
                                     byte LocationY = 49;
                                     byte ClickID1 = 31;
                                     byte ClickID2 = 48;
+                                    byte ClickID3 = 65;
+                                    byte ClickID4 = 82;
+                                    byte ClickID5 = 99;
+                                    byte ClickID6 = 117;
 
-                                    foreach (var o in _connections.Values)
+                                    if (_connections.Count < 16)
                                     {
-                                        if (o.UCID != 0)
+
+                                        SortedList<int, string> sorted = new SortedList<int, string>();
+                                        
+
+                                        foreach (var o in _connections.Values)
                                         {
-                                            insim.Send(new IS_BTN
+                                            sorted.Add(o.points, "points");
+
+
+
                                             {
-                                                UCID = mso.UCID,
-                                                ReqI = ClickID1,
-                                                ClickID = ClickID1,
-                                                BStyle = ButtonStyles.ISB_LIGHT,
-                                                H = 4,
-                                                W = 4,
-                                                T = LocationY, // up to down
-                                                L = 56, // left to right
-                                                Text = "^7" + numbers
-                                            });
+                                                if (o.UCID != 0)
+                                                {
+                                                    insim.Send(new IS_BTN
+                                                    {
+                                                        UCID = mso.UCID,
+                                                        ReqI = ClickID1,
+                                                        ClickID = ClickID1,
+                                                        BStyle = ButtonStyles.ISB_DARK,
+                                                        H = 4,
+                                                        W = 4,
+                                                        T = LocationY, // up to down
+                                                        L = 56, // left to right
+                                                        Text = "^7" + numbers
+                                                    });
 
-                                            insim.Send(new IS_BTN
-                                            {
-                                                UCID = mso.UCID,
-                                                ReqI = ClickID2,
-                                                ClickID = ClickID2,
-                                                BStyle = ButtonStyles.ISB_LIGHT,
-                                                H = 4,
-                                                W = 30,
-                                                T = LocationY, // up to down
-                                                L = 60, // left to right
-                                                Text = "^7" + o.PName + " ^7(" + o.UName + ")"
-                                            });
+                                                    insim.Send(new IS_BTN
+                                                    {
+                                                        UCID = mso.UCID,
+                                                        ReqI = ClickID2,
+                                                        ClickID = ClickID2,
+                                                        BStyle = ButtonStyles.ISB_DARK,
+                                                        H = 4,
+                                                        W = 30,
+                                                        T = LocationY, // up to down
+                                                        L = 60, // left to right
+                                                        Text = "^7" + o.PName + " ^7(" + o.UName + ")"
+                                                    });
+
+                                                    if (o.CurrentMapHotlap == "" || o.CurrentMapHotlap == "0")
+                                                    {
+                                                        // Best Lap
+                                                        insim.Send(new IS_BTN
+                                                        {
+                                                            UCID = mso.UCID,
+                                                            ReqI = ClickID5,
+                                                            ClickID = ClickID5,
+                                                            BStyle = ButtonStyles.ISB_DARK,
+                                                            H = 4,
+                                                            W = 17,
+                                                            T = LocationY, // up to down
+                                                            L = 90, // left to right
+                                                            Text = "^7not set"
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        // Best Lap
+                                                        insim.Send(new IS_BTN
+                                                        {
+                                                            UCID = mso.UCID,
+                                                            ReqI = ClickID5,
+                                                            ClickID = ClickID5,
+                                                            BStyle = ButtonStyles.ISB_DARK,
+                                                            H = 4,
+                                                            W = 17,
+                                                            T = LocationY, // up to down
+                                                            L = 90, // left to right
+                                                            Text = "^7" + Convert.ToString(o.CurrentMapHotlap)
+                                                        });
+                                                    }
 
 
+                                                    if (o.OnTrack == true)
+                                                    {
+                                                        insim.Send(new IS_BTN
+                                                        {
+                                                            UCID = mso.UCID,
+                                                            ReqI = ClickID3,
+                                                            ClickID = ClickID3,
+                                                            BStyle = ButtonStyles.ISB_DARK,
+                                                            H = 4,
+                                                            W = 22,
+                                                            T = LocationY, // up to down
+                                                            L = 107, // left to right
+                                                            Text = "^7" + CarHelper.GetFullCarName(o.CarName)
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        insim.Send(new IS_BTN
+                                                        {
+                                                            UCID = mso.UCID,
+                                                            ReqI = ClickID3,
+                                                            ClickID = ClickID3,
+                                                            BStyle = ButtonStyles.ISB_DARK,
+                                                            H = 4,
+                                                            W = 22,
+                                                            T = LocationY, // up to down
+                                                            L = 107, // left to right
+                                                            Text = "^1Off-track"
+                                                        });
+                                                    }
+
+                                                    if (o.OnTrack == true)
+                                                    {
+                                                        if (o.Plate == "")
+                                                        {
+                                                            insim.Send(new IS_BTN
+                                                            {
+                                                                UCID = mso.UCID,
+                                                                ReqI = ClickID4,
+                                                                ClickID = ClickID4,
+                                                                BStyle = ButtonStyles.ISB_DARK,
+                                                                H = 4,
+                                                                W = 17,
+                                                                T = LocationY, // up to down
+                                                                L = 129, // left to right
+                                                                Text = "^7None"
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            insim.Send(new IS_BTN
+                                                            {
+                                                                UCID = mso.UCID,
+                                                                ReqI = ClickID4,
+                                                                ClickID = ClickID4,
+                                                                BStyle = ButtonStyles.ISB_DARK,
+                                                                H = 4,
+                                                                W = 17,
+                                                                T = LocationY, // up to down
+                                                                L = 129, // left to right
+                                                                Text = "^7" + o.Plate
+                                                            });
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        insim.Send(new IS_BTN
+                                                        {
+                                                            UCID = mso.UCID,
+                                                            ReqI = ClickID4,
+                                                            ClickID = ClickID4,
+                                                            BStyle = ButtonStyles.ISB_DARK,
+                                                            H = 4,
+                                                            W = 17,
+                                                            T = LocationY, // up to down
+                                                            L = 129, // left to right
+                                                            Text = "^1Off-track"
+                                                        });
+                                                    }
+
+                                                    foreach (var pair in sorted)
+                                                    {
 
 
-                                            LocationY += 4;
-                                            ClickID1++;
-                                            ClickID2++;
-                                            numbers++;
+                                                        insim.Send(new IS_BTN
+                                                        {
+                                                            UCID = mso.UCID,
+                                                            ReqI = ClickID6,
+                                                            ClickID = ClickID6,
+                                                            BStyle = ButtonStyles.ISB_DARK,
+                                                            H = 4,
+                                                            W = 17,
+                                                            T = LocationY, // up to down
+                                                            L = 146, // left to right
+                                                            Text = "^2" + pair
+                                                        });
+                                                    }
+
+
+                                                    LocationY += 4;
+                                                    ClickID1++;
+                                                    ClickID2++;
+                                                    ClickID3++;
+                                                    ClickID4++;
+                                                    ClickID5++;
+                                                    ClickID6++;
+                                                    numbers++;
+                                                    _connections[mso.UCID].inStats = true;
+                                                }
+                                            }
                                         }
                                     }
 
@@ -473,6 +653,12 @@ namespace DRS_InSim
 
 
                             break;
+
+                            case "!test":
+
+                                insim.Send(255, ".CurrentMapHotlap: " + _connections[mso.UCID].CurrentMapHotlap);
+
+                                break;
 
                             case "!deletepts":
                             case "!deletepoints":

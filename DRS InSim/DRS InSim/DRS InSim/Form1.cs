@@ -50,6 +50,9 @@ namespace DRS_InSim
             public string UName;
             public string PName;
             public bool IsAdmin;
+            public string Plate;
+
+            public bool DisplaysOpen;
 
             // Custom rankings
             public bool IsSuperAdmin;
@@ -60,6 +63,9 @@ namespace DRS_InSim
             public bool KMHoverMPH;
             public int points;
             public bool inStats;
+            public byte stage;
+
+            public string CurrentMapHotlap;
 
             // Laps
             public int LapsDone;
@@ -88,6 +94,7 @@ namespace DRS_InSim
 
         private Dictionary<byte, Connections> _connections = new Dictionary<byte, Connections>();
         private Dictionary<byte, Players> _players = new Dictionary<byte, Players>();
+        private Dictionary<int, string> dict = new Dictionary<int, string>();
 
         string IPAddress = "127.0.0.1";
         ushort InSimPort = 29999;
@@ -175,7 +182,7 @@ namespace DRS_InSim
             insim.Bind<IS_MCI>(MultiCarInfo);
             insim.Bind<IS_CNL>(ConnectionLeave);
             insim.Bind<IS_CPR>(ClientRenames);
-            // insim.Bind<IS_PLL>(PlayerLeave);
+            insim.Bind<IS_PLL>(PlayerLeave);
             insim.Bind<IS_STA>(OnStateChange);
             insim.Bind<IS_BTC>(ButtonClick);
             insim.Bind<IS_BFN>(ClearButtons);
@@ -313,7 +320,8 @@ namespace DRS_InSim
                     OnTrack = false,
                     TotalDistance = 0,
                     Pitstops = 0,
-                    points = 0
+                    points = 0,
+                    CurrentMapHotlap = "0"
                 });
 
                 if (ConnectedToSQL)
@@ -344,7 +352,14 @@ namespace DRS_InSim
                             SqlInfo.AddUser(NCN.UName, StringHelper.StripColors(_connections[NCN.UCID].PName), _connections[NCN.UCID].TotalDistance, _connections[NCN.UCID].points);
                         }
 
-
+                        if (SqlInfo.TimesExist(NCN.UName))
+                        {
+                            _connections[NCN.UCID].CurrentMapHotlap = Convert.ToString(SqlInfo.showTime(TrackName, NCN.UName));
+                        }
+                        else
+                        {
+                            SqlInfo.Addtimes(NCN.UName);
+                        }
 
 
 
@@ -404,6 +419,17 @@ namespace DRS_InSim
 _connections[conn.UCID].LapTime.Seconds,
 _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3" + conn.CarName);
                         conn.SentMSG = true;
+
+                        conn.CurrentMapHotlap = string.Format("{0:00}:{1:00}:{2:00}",
+(int)_connections[conn.UCID].LapTime.Minutes,
+_connections[conn.UCID].LapTime.Seconds,
+_connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1));
+
+                        SqlInfo.updateTime(TrackName, string.Format("{0:00}:{1:00}:{2:00}",
+(int)_connections[conn.UCID].LapTime.Minutes,
+_connections[conn.UCID].LapTime.Seconds,
+_connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UName);
+
                     }
 
 
@@ -474,6 +500,8 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
 
                 // if (CurrentConnection.SentMSG)
                 CurrentConnection.CarName = NPL.CName;
+                CurrentConnection.OnTrack = true;
+                CurrentConnection.Plate = NPL.Plate;
 
                 
             }
@@ -560,6 +588,8 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
         {
             try
             {
+                _connections.Remove(CNL.UCID);
+
                 if (ConnectedToSQL)
                 {
                     try { SqlInfo.UpdateUser(_connections[CNL.UCID].UName, StringHelper.StripColors(_connections[CNL.UCID].PName), _connections[CNL.UCID].TotalDistance, _connections[CNL.UCID].points); }
@@ -630,6 +660,11 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                     _connections[BFN.UCID].inAP = false;
                 }
 
+                if (_connections[BFN.UCID].DisplaysOpen == true)
+                {
+                    _connections[BFN.UCID].DisplaysOpen = false;
+                }
+
                 if (_connections[BFN.UCID].inStats == true)
                 {
                     _connections[BFN.UCID].inStats = false;
@@ -648,7 +683,12 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
 
                 if (ConnectedToSQL)
                 {
-                    try { SqlInfo.UpdateUser(_connections[CPR.UCID].UName, StringHelper.StripColors(_connections[CPR.UCID].PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points); }
+                    try
+                    {
+                        SqlInfo.UpdateUser(_connections[CPR.UCID].UName, StringHelper.StripColors(_connections[CPR.UCID].PName), _connections[CPR.UCID].TotalDistance, _connections[CPR.UCID].points);
+                        _connections[CPR.UCID].PName = CPR.PName;
+                        _connections[CPR.UCID].Plate = CPR.Plate;
+                    }
                     catch (Exception EX)
                     {
                         if (!SqlInfo.IsConnectionStillAlive())
@@ -656,7 +696,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
                             ConnectedToSQL = false;
                             SQLReconnectTimer.Start();
                         }
-                        else { LogTextToFile("error", "CNL - Exception: " + EX, false); }
+                        else { LogTextToFile("error", "CPR - Exception: " + EX, false); }
                     }
                 }
 
@@ -672,6 +712,19 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)) + " ^8- ^3
             try { BTC_ClientClickedButton(BTC); }
             catch (Exception e)
             { LogTextToFile("error", "[" + BTC.UCID + "] " + StringHelper.StripColors(_connections[BTC.UCID].PName) + "(" + _connections[BTC.UCID].UName + ") BTC - Exception: " + e, false); }
+        }
+
+        // Player Leave
+        void PlayerLeave(InSim insim, IS_PLL PLL)
+        {
+            try
+            {
+                Connections CurrentConnection = GetConnection(PLL.PLID);
+
+                CurrentConnection.OnTrack = false;
+            }
+            catch (Exception e)
+            { LogTextToFile("error", "[PLL] " + StringHelper.StripColors(_connections[PLL.PLID].PName) + "(" + _connections[PLL.PLID].UName + ") PLL - Exception: " + e, false); }
         }
 
 

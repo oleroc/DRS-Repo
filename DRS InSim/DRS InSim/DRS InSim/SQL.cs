@@ -34,7 +34,10 @@ namespace DRS_InSim
                 SQL.Open();
 
                 Query("CREATE TABLE IF NOT EXISTS users(PRIMARY KEY(username),username CHAR(25) NOT NULL,nickname CHAR(40) NOT NULL,distance decimal(10),points int(10));");
+
                 Query("CREATE TABLE IF NOT EXISTS admin_settings(firstplace int(3), secondplace int(3), thirdplace int(3), forthplace int(3));");
+
+                // Query("CREATE TABLE IF NOT EXISTS times(")
             }
             catch { return false; }
             return true;
@@ -61,6 +64,26 @@ namespace DRS_InSim
                     dr.Close();
 
             return Convert.ToInt32(query.ExecuteScalar());
+        }
+
+        public void updateTime(string trackname, string hotlap, string username)
+        {
+            Query("UPDATE times SET " + trackname + "='" + hotlap + "' WHERE username='" + username + "';");
+        }
+
+        public string showTime(string trackname, string username)
+        {
+            MySqlCommand query = new MySqlCommand();
+            query.Connection = SQL;
+            query.CommandText = "SELECT " + trackname + " FROM times WHERE username='" + username + "' LIMIT 1";
+            query.Prepare();
+            MySqlDataReader dr = query.ExecuteReader();
+
+            if (dr.Read())
+                if (dr.GetString(0) != "")
+                    dr.Close();
+
+            return Convert.ToString(query.ExecuteScalar());
         }
 
         public void deletePTS()
@@ -191,11 +214,32 @@ namespace DRS_InSim
             return found;
         }
 
+        public bool TimesExist(string username, string table = "times")
+        {
+            MySqlCommand query = new MySqlCommand();
+            query.Connection = SQL;
+            query.CommandText = "SELECT username FROM " + table + " WHERE username='" + username + "' LIMIT 1;";
+            query.Prepare();
+            MySqlDataReader dr = query.ExecuteReader();
+
+            bool found = false;
+
+            if (dr.Read()) if (dr.GetString(0) != "") found = true;
+            dr.Close();
+
+            return found;
+        }
+
 
         public void AddUser(string username, string nickname, decimal distance, int points)
         {
             if (username == "") return;
             Query("INSERT INTO users VALUES ('" + username + "', '" + StringHelper.StripColors(nickname) + "', " + distance + ", " + points + ");");
+        }
+        public void Addtimes(string username)
+        {
+            if (username == "") return;
+            Query("INSERT INTO times VALUES ('" + username + "', " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ");");
         }
         public void UpdateUser(string username, string nickname, decimal distance, int points)
         {
