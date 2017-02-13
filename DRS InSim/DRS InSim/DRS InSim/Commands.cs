@@ -5,6 +5,8 @@ using InSimDotNet.Packets;
 using InSimDotNet.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
+using System.Diagnostics;
 
 namespace DRS_InSim
 {
@@ -31,6 +33,7 @@ namespace DRS_InSim
                                 if (_connections[mso.UCID].inStats == false)
                                 {
                                     // DARK WINDOW
+                                    #region ' buttons #1 '
                                     insim.Send(new IS_BTN
                                     {
                                         UCID = mso.UCID,
@@ -133,7 +136,9 @@ namespace DRS_InSim
                                         L = 56, // left to right
                                         Text = "^1›^3›^1›^3›^1› ^7CLOSE WINDOW ^1‹^3‹^1‹^3‹^1‹"
                                     });
+                                    #endregion
 
+                                    #region ' vars '
                                     byte numbers = 1;
                                     byte LocationY = 49;
                                     byte ClickID1 = 31;
@@ -142,19 +147,13 @@ namespace DRS_InSim
                                     byte ClickID4 = 82;
                                     byte ClickID5 = 99;
                                     byte ClickID6 = 117;
+                                    #endregion
 
-                                    if (_connections.Count < 16)
+                                    #region ' buttons #2 '
+                                    // if (_connections.Count < 16)
                                     {
-
-                                        SortedList<int, string> sorted = new SortedList<int, string>();
-                                        
-
                                         foreach (var o in _connections.Values)
                                         {
-                                            sorted.Add(o.points, "points");
-
-
-
                                             {
                                                 if (o.UCID != 0)
                                                 {
@@ -176,7 +175,7 @@ namespace DRS_InSim
                                                         UCID = mso.UCID,
                                                         ReqI = ClickID2,
                                                         ClickID = ClickID2,
-                                                        BStyle = ButtonStyles.ISB_DARK,
+                                                        BStyle = ButtonStyles.ISB_DARK | ButtonStyles.ISB_LEFT,
                                                         H = 4,
                                                         W = 30,
                                                         T = LocationY, // up to down
@@ -216,7 +215,6 @@ namespace DRS_InSim
                                                             Text = "^7" + Convert.ToString(o.CurrentMapHotlap)
                                                         });
                                                     }
-
 
                                                     if (o.OnTrack == true)
                                                     {
@@ -298,23 +296,20 @@ namespace DRS_InSim
                                                         });
                                                     }
 
-                                                    foreach (var pair in sorted)
+
+                                                    insim.Send(new IS_BTN
                                                     {
+                                                        UCID = mso.UCID,
+                                                        ReqI = ClickID6,
+                                                        ClickID = ClickID6,
+                                                        BStyle = ButtonStyles.ISB_DARK,
+                                                        H = 4,
+                                                        W = 17,
+                                                        T = LocationY, // up to down
+                                                        L = 146, // left to right
+                                                        Text = "^2" + o.points
+                                                    });
 
-
-                                                        insim.Send(new IS_BTN
-                                                        {
-                                                            UCID = mso.UCID,
-                                                            ReqI = ClickID6,
-                                                            ClickID = ClickID6,
-                                                            BStyle = ButtonStyles.ISB_DARK,
-                                                            H = 4,
-                                                            W = 17,
-                                                            T = LocationY, // up to down
-                                                            L = 146, // left to right
-                                                            Text = "^2" + pair
-                                                        });
-                                                    }
 
 
                                                     LocationY += 4;
@@ -330,15 +325,8 @@ namespace DRS_InSim
                                             }
                                         }
                                     }
-
-
-
-
-
-
-
-
-
+                                    #endregion
+                                    
                                 }
 
                                 break;
@@ -380,7 +368,7 @@ namespace DRS_InSim
                                             W = 48,
                                             T = 53, // up to down
                                             L = 76, // left to right
-                                            Text = "^7ADMIN PANELET"
+                                            Text = "^7ADMIN PANEL"
                                         });
 
 
@@ -522,10 +510,23 @@ namespace DRS_InSim
                                             ClickID = 36,
                                             BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
                                             H = 4,
-                                            W = 9,
+                                            W = 10,
                                             T = 73, // up to down
                                             L = 111, // left to right
                                             Text = "^7DEFAULT"
+                                        });
+
+                                        insim.Send(new IS_BTN
+                                        {
+                                            UCID = mso.UCID,
+                                            ReqI = 135,
+                                            ClickID = 135,
+                                            BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
+                                            H = 4,
+                                            W = 10,
+                                            T = 77, // up to down
+                                            L = 111, // left to right
+                                            Text = "^7ANNOUNCE"
                                         });
 
                                         insim.Send(new IS_BTN
@@ -535,7 +536,7 @@ namespace DRS_InSim
                                             ClickID = 37,
                                             BStyle = ButtonStyles.ISB_LIGHT | ButtonStyles.ISB_CLICK,
                                             H = 4,
-                                            W = 9,
+                                            W = 10,
                                             T = 85, // up to down
                                             L = 111, // left to right
                                             Text = "^7CLOSE"

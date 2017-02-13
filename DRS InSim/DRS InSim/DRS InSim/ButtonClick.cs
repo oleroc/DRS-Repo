@@ -23,6 +23,19 @@ namespace DRS_InSim
             {
                 switch (BTC.ClickID)
                 {
+                    case 135:
+
+                        if (conn.inAP == true)
+                        {
+                            insim.Send(255, "^1*** ^3WIN POINTS HAS BEEN UPDATED ^1***");
+                            insim.Send(255, "^1› ^81st. place = ^2" + onepts);
+                            insim.Send(255, "^1› ^82nd. place = ^2" + twopts);
+                            insim.Send(255, "^1› ^83rd. place = ^2" + threepts);
+                            insim.Send(255, "^1› ^84th. place = ^2" + fourpts);
+                        }
+
+                        break;
+
                     case 134:
 
                         if (conn.inStats == true)
@@ -172,6 +185,12 @@ namespace DRS_InSim
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 35);
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 36);
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 37);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 38);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 39);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 40);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 41);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 42);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 135);
 
                             onepts = Convert.ToString(4);
                             twopts = Convert.ToString(3);
@@ -212,6 +231,7 @@ namespace DRS_InSim
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 41);
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 42);
                             deleteBtn(BTC.UCID, BTC.ReqI, true, 43);
+                            deleteBtn(BTC.UCID, BTC.ReqI, true, 135);
                             conn.inAP = false;
                         }
 

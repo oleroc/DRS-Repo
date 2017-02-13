@@ -1,0 +1,8 @@
+2/12/2017 5:53:24 AM: MCI - Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at DRS_InSim.Form1.MultiCarInfo(InSim insim, IS_MCI mci) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 621
+2/12/2017 5:53:30 AM: CNL - Exception: System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at DRS_InSim.Form1.ConnectionLeave(InSim insim, IS_CNL CNL) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 597
+2/12/2017 5:55:58 AM: CNL - Exception: System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at DRS_InSim.Form1.ConnectionLeave(InSim insim, IS_CNL CNL) in C:\Users\Peter Pan\Documents\GitHub\DRS-Repo\DRS InSim\DRS InSim\DRS InSim\Form1.cs:line 600

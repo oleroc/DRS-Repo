@@ -18,7 +18,7 @@ namespace DRS_InSim
 
         public string Layoutname = "None";
         public string TrackName = "None";
-        public string InSim_Version = "1.5.0";
+        public string InSim_Version = "1.5.3";
         public bool enable_db_connection = true;
 
         public string onepts;
@@ -31,6 +31,8 @@ namespace DRS_InSim
         public int ptsSECOND;
         public int ptsTHIRD;
         public int ptsFORTH;
+
+        
 
         // MySQL Variables
         public SQLInfo SqlInfo = new SQLInfo();
@@ -64,6 +66,8 @@ namespace DRS_InSim
             public int points;
             public bool inStats;
             public byte stage;
+
+            public int tempts;
 
             public string CurrentMapHotlap;
 
@@ -288,7 +292,7 @@ namespace DRS_InSim
             return false;
         }
 
-        private void LogTextToFile(string file, string text, bool AdminMessage = true)
+        public void LogTextToFile(string file, string text, bool AdminMessage = true)
         {
 
             if (System.IO.File.Exists("files/" + file + ".log") == false) { FileStream CurrentFile = System.IO.File.Create("files/" + file + ".log"); CurrentFile.Close(); }
@@ -361,6 +365,7 @@ namespace DRS_InSim
                             SqlInfo.Addtimes(NCN.UName);
                         }
 
+                        _connections[NCN.UCID].tempts = SqlInfo.getpts(NCN.UName);
 
 
                     }
@@ -638,8 +643,6 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                             conn.TotalDistance += Convert.ToInt32(SpeedMS);
                             // anglenew = angle.ToString().Replace("-", "");
                             UpdateGui(conn.UCID, true);
-
-
                         }
                     }
                 }
@@ -835,7 +838,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                         if (BTT.Text.Contains("1") || BTT.Text.Contains("2") || BTT.Text.Contains("3") || BTT.Text.Contains("4") || BTT.Text.Contains("5") || BTT.Text.Contains("6") || BTT.Text.Contains("7")
      || BTT.Text.Contains("8") || BTT.Text.Contains("9"))
                         {
-                            onepts = BTT.Text;
+                            fourpts = BTT.Text;
 
                             insim.Send(new IS_BTN
                             {
