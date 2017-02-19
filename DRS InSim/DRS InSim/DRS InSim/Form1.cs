@@ -409,7 +409,7 @@ namespace DRS_InSim
                 conn.LapTime = LAP.LTime;
                 conn.NumStops = LAP.NumStops;
 
-                if (conn.SentMSG == false && conn.Disqualified == false)
+                if (conn.SentMSG == false)
                 {
                     if (conn.Disqualified == true)
                     {
@@ -982,7 +982,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                     W = 31,
                     T = 1,
                     L = 87,
-                    Text = "^3- ^7" + TrackName + " ^3-"
+                    Text = "^7" + _connections[UCID].PName
                 });
 
                 insim.Send(new IS_BTN

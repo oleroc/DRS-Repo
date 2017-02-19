@@ -297,6 +297,8 @@ namespace DRS_InSim
                                                     }
 
 
+
+
                                                     insim.Send(new IS_BTN
                                                     {
                                                         UCID = mso.UCID,
@@ -684,18 +686,19 @@ namespace DRS_InSim
                             case "!delptsall":
                                 if (_connections[mso.UCID].IsAdmin == true)
                                 {
-                                    foreach (var conns in _connections.Values)
-                                    {
-                                        conns.points = 0;
-                                        SqlInfo.deletePTS();
-                                    }
 
-                                    insim.Send(mso.UCID, "^3" + dbCount + " ^8entries of column ^3points ^8deleted.");
+                                    insim.Send(mso.UCID, "^3" + dbCount + " ^8entries of column ^3points ^8deleted");
                                     UpdateGui(255, true);
                                 }
                                 else
                                 {
                                     insim.Send(mso.UCID, "^1No access");
+                                }
+
+                                foreach (var conns in _connections.Values)
+                                {
+                                    conns.points = 0;
+                                    SqlInfo.deletePTS();
                                 }
                                 break;
 
