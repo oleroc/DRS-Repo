@@ -935,10 +935,10 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                     ReqI = 1,
                     ClickID = 1,
                     BStyle = ButtonStyles.ISB_DARK,
-                    H = 8,
+                    H = 12,
                     W = 68,
                     T = 0,
-                    L = 66,
+                    L = 56,
                 });
 
                 if (_connections[UCID].TotalDistance / 1000 > 999)
@@ -950,9 +950,9 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                         ClickID = 2,
                         BStyle = ButtonStyles.ISB_LEFT,
                         H = 5,
-                        W = 20,
+                        W = 30,
                         T = 1,
-                        L = 67,
+                        L = 57,
                         Text = "^3Distance: ^7" + string.Format("{0:0,0.0}", _connections[UCID].TotalDistance / 1000) + " km"
                     });
                 }
@@ -965,9 +965,9 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                         ClickID = 2,
                         BStyle = ButtonStyles.ISB_LEFT,
                         H = 5,
-                        W = 20,
+                        W = 30,
                         T = 1,
-                        L = 67,
+                        L = 57,
                         Text = "^3Distance: ^7" + string.Format("{0:0.0}", _connections[UCID].TotalDistance / 1000) + " km"
                     });
                 }
@@ -979,23 +979,38 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                     ClickID = 3,
                     BStyle = ButtonStyles.ISB_C4,
                     H = 5,
-                    W = 31,
+                    W = 40,
                     T = 1,
-                    L = 87,
-                    Text = "^7" + _connections[UCID].PName
+                    L = 83,
+                    Text = "^3>>> ^7" + _connections[UCID].PName + "^3 <<< " 
                 });
+
+
 
                 insim.Send(new IS_BTN
                 {
                     UCID = UCID,
                     ReqI = 4,
                     ClickID = 4,
-                    BStyle = ButtonStyles.ISB_RIGHT,
+                    BStyle = ButtonStyles.ISB_LEFT,
                     H = 5,
-                    W = 15,
-                    T = 1,
-                    L = 118,
+                    W = 30,
+                    T = 6,
+                    L = 57,
                     Text = "^3Points: ^7" + _connections[UCID].points
+                });
+
+                insim.Send(new IS_BTN
+                {
+                    UCID = UCID,
+                    ReqI = 5,
+                    ClickID = 5,
+                    BStyle = ButtonStyles.ISB_C4,
+                    H = 5,
+                    W = 40,
+                    T = 6,
+                    L = 83,
+                    Text = "^1" + TrackHelper.GetFullTrackName(TrackName)
                 });
 
 
