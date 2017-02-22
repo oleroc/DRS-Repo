@@ -924,7 +924,7 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
             { LogTextToFile("error", "[" + RES.PLID + "] " + "" + "() RES - Exception: " + e, false); }
         }
 
-        void UpdateGui(byte UCID, bool main)
+void UpdateGui(byte UCID, bool main)
         {
             if (main)
             {
@@ -935,11 +935,19 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                     ReqI = 1,
                     ClickID = 1,
                     BStyle = ButtonStyles.ISB_DARK,
+
                     H = 12,
                     W = 68,
                     T = 0,
                     L = 56,
+
+                    H = 19,
+                    W = 44,
+                    T = 0,
+                    L = 114,
+
                 });
+
 
                 if (_connections[UCID].TotalDistance / 1000 > 999)
                 {
@@ -952,7 +960,11 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                         H = 5,
                         W = 30,
                         T = 1,
+
                         L = 57,
+
+                        L = 114,
+
                         Text = "^3Distance: ^7" + string.Format("{0:0,0.0}", _connections[UCID].TotalDistance / 1000) + " km"
                     });
                 }
@@ -967,7 +979,11 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                         H = 5,
                         W = 30,
                         T = 1,
+
                         L = 57,
+
+                        L = 114,
+
                         Text = "^3Distance: ^7" + string.Format("{0:0.0}", _connections[UCID].TotalDistance / 1000) + " km"
                     });
                 }
@@ -977,12 +993,18 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                     UCID = UCID,
                     ReqI = 3,
                     ClickID = 3,
-                    BStyle = ButtonStyles.ISB_C4,
+                    BStyle = ButtonStyles.ISB_LEFT,
                     H = 5,
                     W = 40,
+
                     T = 1,
                     L = 83,
                     Text = "^3>>> ^7" + _connections[UCID].PName + "^3 <<< " 
+
+                    T = 7,
+                    L = 114,
+                    Text = "^3Navn: ^1" + _connections[UCID].PName + "^3" 
+
                 });
 
 
@@ -995,8 +1017,13 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                     BStyle = ButtonStyles.ISB_LEFT,
                     H = 5,
                     W = 30,
+
                     T = 6,
                     L = 57,
+
+                    T = 1,
+                    L = 141,
+
                     Text = "^3Points: ^7" + _connections[UCID].points
                 });
 
@@ -1005,12 +1032,21 @@ _connections[conn.UCID].LapTime.Milliseconds.ToString().Remove(0, 1)), conn.UNam
                     UCID = UCID,
                     ReqI = 5,
                     ClickID = 5,
+
                     BStyle = ButtonStyles.ISB_C4,
                     H = 5,
                     W = 40,
                     T = 6,
                     L = 83,
                     Text = "^1" + TrackHelper.GetFullTrackName(TrackName)
+
+                    BStyle = ButtonStyles.ISB_LEFT,
+                    H = 5,
+                    W = 40,
+                    T = 13,
+                    L = 114,
+                    Text = "^3Track: ^2" + TrackHelper.GetFullTrackName(TrackName)
+
                 });
 
 
