@@ -942,6 +942,11 @@ void UpdateGui(byte UCID, bool main)
                     L = 56,
 
                     H = 19,
+
+                    W = 38,
+                    T = 0,
+                    L = 100,
+
                     W = 44,
                     T = 0,
                     L = 114,
@@ -961,7 +966,11 @@ void UpdateGui(byte UCID, bool main)
                         W = 30,
                         T = 1,
 
+
                         L = 57,
+
+                        L = 100,
+
 
                         L = 114,
 
@@ -980,7 +989,11 @@ void UpdateGui(byte UCID, bool main)
                         W = 30,
                         T = 1,
 
+
                         L = 57,
+
+                        L = 100,
+
 
                         L = 114,
 
@@ -1002,6 +1015,10 @@ void UpdateGui(byte UCID, bool main)
                     Text = "^3>>> ^7" + _connections[UCID].PName + "^3 <<< " 
 
                     T = 7,
+
+                    L = 100,
+                    Text = "^3Navn: ^2" + _connections[UCID].PName + "^3" 
+
                     L = 114,
                     Text = "^3Navn: ^1" + _connections[UCID].PName + "^3" 
 
@@ -1022,9 +1039,27 @@ void UpdateGui(byte UCID, bool main)
                     L = 57,
 
                     T = 1,
+
+                    L = 125,
+                    Text = "^3Pts: ^7" + _connections[UCID].points
+                });
+
+                insim.Send(new IS_BTN
+                {
+                    UCID = UCID,
+                    ReqI = 5,
+                    ClickID = 5,
+                    BStyle = ButtonStyles.ISB_LEFT,
+                    H = 5,
+                    W = 40,
+                    T = 13,
+                    L = 100,
+                    Text = "^3Track: ^2" + TrackHelper.GetFullTrackName(TrackName)
+
                     L = 141,
 
                     Text = "^3Points: ^7" + _connections[UCID].points
+
                 });
 
                 insim.Send(new IS_BTN
@@ -1052,7 +1087,7 @@ void UpdateGui(byte UCID, bool main)
 
             }
         }
-
+        
         private void deleteBtn(byte ucid, byte reqi, bool sendbfn, byte clickid)
         {
             if (sendbfn == true)
